@@ -15,6 +15,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const session = await auth();
+  const user = session?.user as any;
 
   // 1. IP Restriction for /fikradmin
   if (pathname.startsWith('/fikradmin')) {
@@ -36,25 +37,24 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
-
-    const userRole = (session.user as any).role;
-    const phone = (session.user as any).phone;
-    const isApproved = (session.user as any).isApproved;
+  if (user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+    const userRole = user.role;
+    const phone = user.phone;
+    const isApproved = user.isApproved;
     
-    // A user is NOT onboarded if:
-    // 1. They have no role at all.
-    // 2. They are a Deeni Guide but are missing their phone number (mandatory for guides).
-    const isMissingOnboarding = !userRole || (userRole === 'DEENI_GUIDE' && !phone);
+    // Separation of Roles: Standard Users vs Guides
+    const hasRole = !!userRole;
+    const needsGuideProfile = userRole === 'DEENI_GUIDE' && !phone;
     
-    if (isMissingOnboarding && !isPendingPage) {
-       console.log(`[PROXY] Redirecting user ${session.user.email} to setup-profile`);
+    // Redirect to onboarding if missing core role or guide profile
+    if ((!hasRole || needsGuideProfile) && !isPendingPage) {
+       console.log(`[PROXY] Redirecting ${user.email} to setup-profile (Needs role: ${!hasRole}, Needs profile: ${needsGuideProfile})`);
        return NextResponse.redirect(new URL('/setup-profile', request.url));
     }
 
     // 3. Deeni Guide Approval Check
     if (userRole === 'DEENI_GUIDE' && isApproved === false && !isPendingPage) {
-       console.log(`[PROXY] Redirecting pending guide ${session.user.email} to approval page`);
+       console.log(`[PROXY] Redirecting pending guide ${user.email} to approval page`);
        return NextResponse.redirect(new URL('/pending-approval', request.url));
     }
   }
