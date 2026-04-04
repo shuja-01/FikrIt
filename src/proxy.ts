@@ -29,8 +29,14 @@ export async function proxy(request: NextRequest) {
   // 2. Profile Setup Redirect
   const isAuthRoute = pathname.startsWith('/api/auth');
   const isPendingPage = pathname.includes('/pending-approval');
+  const hasJustOnboarded = request.cookies.get('fikrit_onboarded');
   
   if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+    // If the user just successfully filled out the signup form, let them through
+    // even if the NextAuth session cookie is still stale.
+    if (hasJustOnboarded) {
+      return NextResponse.next();
+    }
     const userRole = (session.user as any).role;
     const phone = (session.user as any).phone;
     const isApproved = (session.user as any).isApproved;
