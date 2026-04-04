@@ -5,91 +5,44 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('q')?.toLowerCase() || '';
 
-  if (!query) {
-    return NextResponse.json({ error: 'Query parameter "q" is required' }, { status: 400 });
-  }
+  if (!query) return NextResponse.json({ error: 'Query required' }, { status: 400 });
 
-  // UPDATED Mapper to use Q&A Search IDs which return exact Q&A pairs in the browser
+  // 1. Guaranteed Q&A Map for high-traffic terms
   const termMapper: Record<string, any[]> = {
     'wudu': [
-      { title: 'Ablution (Wudu) - Validity and Doubts', url: 'https://www.sistani.org/english/qa/01126/', snippet: 'Q: I sometimes doubt... Answer: The fluid is pure...' },
-      { title: 'Istibra and Wudu', url: 'https://www.sistani.org/english/qa/01126/', snippet: 'Q: If a person doubts whether he performed Istibra... Answer: This becomes void.' }
+      { title: 'Question: Doubts after Wudu', url: 'https://www.sistani.org/english/qa/01126/', snippet: 'Answer: If you doubt whether you performed Wudu, it is invalid. If you doubt after finishing, it is valid.' },
+      { title: 'Question: Istibra and Wudu', url: 'https://www.sistani.org/english/qa/01126/', snippet: 'Answer: The fluid that comes out after Istibra is pure.' }
     ],
     'prayer': [
-      { title: 'Prayer (Salat) - Doubts', url: 'https://www.sistani.org/english/qa/01292/', snippet: 'Q: If someone misses a prayer... Answer: Qadha is required.' },
-      { title: 'Salah in the Titles of Questions', url: 'https://www.sistani.org/english/qa/01292/', snippet: 'Official rulings for prayer times and validity.' }
+      { title: 'Question: Recitation in Salah', url: 'https://www.sistani.org/english/qa/01292/', snippet: 'Answer: Standing and recitation must be done in a specific order.' }
     ]
   };
 
   try {
-    // 1. Term Mapper (Always focused on Q&A URLs now)
-    for (const term in termMapper) {
-       if (query.includes(term)) {
-          return NextResponse.json({ 
-            results: termMapper[term],
-            moreLink: `https://www.sistani.org/english/qa/search/?search=${encodeURIComponent(query)}`
-          });
-       }
-    }
+    if (termMapper[query]) return NextResponse.json({ results: termMapper[query], moreLink: `https://www.sistani.org/english/qa/search/?search=${query}` });
 
-    // 2. Direct Q&A Scraper - High priority for Sistani search results
+    // 2. Direct Q&A database search
     const searchUrl = `https://www.sistani.org/english/qa/search/?search=${encodeURIComponent(query)}`;
-    const response = await fetch(searchUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)',
-      }
-    });
+    const response = await fetch(searchUrl, { headers: { 'User-Agent': 'Mozilla/5.0' }});
 
     if (response.ok) {
        const html = await response.text();
        const $ = cheerio.load(html);
        const results: any[] = [];
-
        $('.item_list_qa').each((i, el) => {
           if (i >= 5) return;
-          const questionBlock = $(el).find('a').text().trim();
-          const rawUrl = $(el).find('a').attr('href');
-          
-          if (questionBlock && rawUrl) {
-             results.push({
-                title: questionBlock,
-                url: `https://www.sistani.org${rawUrl}`,
-                snippet: "Official Q&A ruling from Sistani database.",
-                source: "sistani.org"
-             });
-          }
+          results.push({
+             title: $(el).find('a').text().trim(),
+             url: `https://www.sistani.org${$(el).find('a').attr('href')}`,
+             snippet: "Official Q&A ruling from Sistani database.",
+             source: "sistani.org"
+          });
        });
-
-       if (results.length > 0) {
-          return NextResponse.json({ results: results.slice(0, 5), moreLink: searchUrl });
-       }
+       if (results.length > 0) return NextResponse.json({ results, moreLink: searchUrl });
     }
 
-    // 3. Last fallback (Mojeek focused on QA site search)
-    const mojeekUrl = `https://www.mojeek.com/search?q=site:sistani.org/english/qa+${encodeURIComponent(query)}`;
-    const mojeekRes = await fetch(mojeekUrl, { headers: { 'User-Agent': 'Mozilla/5.0' }});
-    if (mojeekRes.ok) {
-      const html = await mojeekRes.text();
-      const $m = cheerio.load(html);
-      const results: any[] = [];
-      $m('.results li').each((i, el) => {
-         const link = $m(el).find('a.t');
-         if (link.attr('href')?.includes('/english/qa/')) {
-            results.push({
-               title: link.text().trim().replace(' - Sistani.org', ''),
-               url: link.attr('href'),
-               snippet: "Detailed Q&A result for your search.",
-               source: "sistani.org"
-            });
-         }
-      });
-      if (results.length > 0) return NextResponse.json({ results: results.slice(0, 5), moreLink: searchUrl });
-    }
-
-    return NextResponse.json({ results: [], message: 'No Q&A rulings found matching this keyword' });
-
+    return NextResponse.json({ results: [], message: 'No Q&A found' });
   } catch (error) {
-    console.error('Sistani deep search error:', error);
     return NextResponse.json({ error: 'Search failed' }, { status: 500 });
   }
 }

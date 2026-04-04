@@ -1,141 +1,123 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Play, TrendingUp, Clock, Filter, Tv as VideoTv, Search, MonitorPlay, X } from "lucide-react";
-import { VIDEOS, VIDEO_CHANNELS, type Video } from "@/core/video-data";
+import { useState } from "react";
+import Image from "next/image";
+import { Play, Clock, TrendingUp, Search } from "lucide-react";
+import { Video, VIDEO_CHANNELS, VIDEOS } from "@/core/video-data";
 
-export default function VideoPortal() {
-  const [selectedChannel, setSelectedChannel] = useState<string>("all");
+export default function VideosPage() {
+  const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
-  const filteredVideos = useMemo(() => {
-    return VIDEOS.filter(v => {
-      const matchChannel = selectedChannel === "all" || v.channelId === selectedChannel;
-      const matchSearch = v.title.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchChannel && matchSearch;
-    });
-  }, [selectedChannel, searchQuery]);
+  const filteredVideos = VIDEOS.filter(v => {
+    const matchesChannel = !selectedChannel || v.channelId === selectedChannel;
+    const matchesSearch = v.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesChannel && matchesSearch;
+  });
 
-  const latestBarabanki = useMemo(() => {
-    return VIDEOS.find(v => v.channelId === 'barabanki' && v.isLatest);
-  }, []);
+  const latestVideo = VIDEOS.find(v => v.isLatest);
+
+  const handlePlay = (video: Video) => {
+    window.open(`https://www.youtube.com/watch?v=${video.id}`, '_blank');
+  };
 
   return (
-    <main className="min-h-screen bg-brand-dark pt-10 pb-20 text-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
-        {/* Featured Header */}
-        {latestBarabanki && (
-          <div className="relative h-[500px] mb-20 rounded-[40px] overflow-hidden group shadow-2xl animate-in zoom-in-95 duration-1000">
-             <div 
-               className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-               style={{ backgroundImage: `url(${latestBarabanki.thumbnail}), url('/ytThumnail.PNG')` }}
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent" />
-             
-             <div className="absolute bottom-16 left-16 max-w-2xl">
-               <div className="flex items-center gap-3 mb-6">
-                 <span className="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-[3px] shadow-lg animate-pulse">LATEST UPLOAD</span>
-                 <span className="text-gray-300 font-medium flex items-center gap-2"><VideoTv size={16} /> {latestBarabanki.channelName}</span>
-               </div>
-               <h2 className="text-6xl font-serif font-black mb-8 leading-tight">{latestBarabanki.title}</h2>
-               <div className="flex items-center gap-6">
-                 <button 
-                   onClick={() => setActiveVideoId(latestBarabanki.id)}
-                   className="bg-brand-gold text-white px-10 py-5 rounded-full font-black flex items-center gap-4 hover:bg-white hover:text-brand-dark transition-all shadow-2xl hover:shadow-brand-gold/40 scale-100 hover:scale-110 active:scale-95 duration-300"
-                 >
-                    <Play fill="currentColor" size={24} /> WATCH NOW
-                 </button>
-               </div>
-             </div>
+    <main className="min-h-screen bg-brand-sand pt-24 px-6 md:px-12 lg:px-24 pb-20">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-brand-dark">Spiritual Content</h1>
+            <p className="text-gray-600 mt-2">Curated Majalis and Islamic knowledge from top authentic channels.</p>
           </div>
-        )}
-
-        {/* Global Toolbar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-16 px-6">
-          <div className="relative group w-full md:w-96">
-             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-brand-gold transition-colors" size={20} />
-             <input 
-               type="text" 
-               placeholder="Search spiritual content..."
-               value={searchQuery}
-               onChange={(e) => setSearchQuery(e.target.value)}
-               className="w-full bg-white/5 border border-white/10 pl-14 pr-8 py-5 rounded-[22px] outline-none focus:ring-4 focus:ring-brand-gold/20 focus:border-brand-gold/40 transition-all font-medium placeholder-gray-600"
-             />
+          
+          <div className="flex flex-wrap items-center gap-3">
+            <button 
+              onClick={() => setSelectedChannel(null)}
+              className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${!selectedChannel ? 'bg-brand-gold text-white' : 'bg-white text-gray-400 border border-gray-100 hover:bg-gray-50'}`}
+            >
+              All Spiritual Channels
+            </button>
+            {VIDEO_CHANNELS.map(channel => (
+              <button 
+                key={channel.id}
+                onClick={() => setSelectedChannel(channel.id)}
+                className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${selectedChannel === channel.id ? 'bg-brand-gold text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100'}`}
+              >
+                {channel.name}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Video Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-          {filteredVideos.map((video, idx) => (
-            <div 
-              key={video.id + idx} 
-              onClick={() => setActiveVideoId(video.id)}
-              className="cursor-pointer bg-white/5 border border-white/5 rounded-[32px] overflow-hidden hover:bg-white/10 transition-all group hover:translate-y-[-12px] duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
-            >
-              <div className="relative aspect-video overflow-hidden">
-                 <img 
-                    src={video.thumbnail} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    onError={(e) => {
-                      (e.target as any).src = '/ytThumnail.PNG';
-                    }} 
-                 />
-                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div className="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-2xl">
-                       <Play fill="white" size={32} />
-                    </div>
-                 </div>
-                 <div className="absolute bottom-4 right-4 bg-black/80 px-2.5 py-1 rounded-md text-xs font-black text-white">
-                   {video.duration}
-                 </div>
+        {/* Latest Video Card (Opens YouTube) */}
+        {latestVideo && !selectedChannel && (
+          <div className="mb-16 group cursor-pointer" onClick={() => handlePlay(latestVideo)}>
+            <div className="relative aspect-video w-full rounded-3xl overflow-hidden shadow-2xl">
+              <img 
+                src={latestVideo.thumbnail} 
+                alt={latestVideo.title}
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 p-8 w-full">
+                <div className="flex items-center gap-2 text-brand-gold font-black text-xs uppercase tracking-widest mb-3">
+                  <Play size={12} fill="currentColor" /> Latest Featured Release
+                </div>
+                <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4 leading-tight group-hover:text-brand-gold transition-colors">
+                  {latestVideo.title}
+                </h2>
+                <div className="flex items-center gap-4 text-white/70 text-sm">
+                  <span className="bg-white/10 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">{latestVideo.channelName}</span>
+                  <span>{latestVideo.views} views</span>
+                  <span className="flex items-center gap-1"><Clock size={14} /> {latestVideo.duration}</span>
+                </div>
               </div>
-              
-              <div className="p-8">
-                 <div className="flex items-center gap-2 mb-4">
-                   <TrendingUp className="text-brand-gold" size={14} />
-                   <span className="text-[10px] font-black text-brand-gold uppercase tracking-[2px]">MOST WATCHED</span>
-                 </div>
-                 <h3 className="text-xl font-bold mb-4 line-clamp-2 leading-relaxed h-[3.5rem]">{video.title}</h3>
-                 <div className="flex items-center justify-between text-gray-500 font-bold text-xs uppercase tracking-widest pt-6 border-t border-white/5">
-                    <span className="flex items-center gap-2 text-gray-300">
-                      <MonitorPlay size={14} className="text-red-500" /> {video.channelName}
-                    </span>
-                 </div>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center text-white shadow-2xl">
+                  <Play size={32} fill="currentColor" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Video Grid (All Open in New Tab) */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredVideos.map(video => (
+            <div 
+              key={video.id} 
+              className="flex flex-col group cursor-pointer"
+              onClick={() => handlePlay(video)}
+            >
+              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg mb-4">
+                <img 
+                  src={video.thumbnail} 
+                  alt={video.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded font-bold">
+                  {video.duration}
+                </div>
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="w-12 h-12 bg-brand-gold rounded-full flex items-center justify-center text-white">
+                    <Play size={20} fill="currentColor" />
+                  </div>
+                </div>
+              </div>
+              <div className="px-1">
+                <div className="flex items-center gap-1.5 text-brand-gold font-black text-[10px] uppercase tracking-widest mb-1">
+                   <TrendingUp size={10} /> Most Watched
+                </div>
+                <h3 className="font-serif font-bold text-brand-dark mb-2 text-lg leading-snug group-hover:text-brand-gold transition-colors">
+                  {video.title}
+                </h3>
+                <div className="flex items-center gap-2 text-xs text-gray-500 font-medium font-black opacity-70">
+                  {video.channelName}
+                </div>
               </div>
             </div>
           ))}
         </div>
-
-        {/* Modal Fix for Restricted Videos */}
-        {activeVideoId && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 lg:p-20 bg-black/98 backdrop-blur-3xl animate-in fade-in duration-300">
-             <button 
-               onClick={() => setActiveVideoId(null)}
-               className="absolute top-10 right-10 p-4 bg-white/5 rounded-full hover:bg-brand-gold text-white transition-all shadow-2xl hover:scale-110 duration-300"
-             >
-                <X size={40} />
-             </button>
-             <div className="w-full h-full max-w-7xl max-h-[85vh] rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(212,175,55,0.2)] border border-white/10 animate-in zoom-in-95 duration-500 bg-black">
-                <iframe 
-                  key={activeVideoId}
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${activeVideoId}?autoplay=1&rel=0&modestbranding=1`}
-                  title="YouTube Playback"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-             </div>
-          </div>
-        )}
-
-        {filteredVideos.length === 0 && (
-           <div className="py-40 text-center text-gray-600 font-medium animate-pulse m-auto">
-              No matching spiritual videos found for your current filter.
-           </div>
-        )}
       </div>
     </main>
   );
