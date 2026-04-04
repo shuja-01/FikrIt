@@ -32,14 +32,14 @@ export default function SetupProfile() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update profile");
 
-      // Redirect immediately based on selection, the proxy/middleware will handle 
-      // the session state on the next page load.
-      // Use window.location.href for the home page to force a 
-      // full reload, ensuring the stale session is cleared.
-      window.location.href = role === "DEENI_GUIDE" ? "/pending-approval" : "/";
-      
-      // Update session in the background
-      update();
+      // IMPORTANT: Do NOT await update() here. It can hang in some environments.
+      // The server-side session fallback in auth.ts now handles the role sync 
+      // automatically on the next page load.
+      if (role === "DEENI_GUIDE") {
+        window.location.href = "/pending-approval";
+      } else {
+        window.location.href = "/";
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
