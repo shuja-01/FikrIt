@@ -10,65 +10,83 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Switching to the /html/ endpoint of DuckDuckGo which is often more lenient than /lite/ on Vercel
-    const searchUrl = `https://duckduckgo.com/html/?q=site:sistani.org/english/qa/+${encodeURIComponent(query)}`;
+    // Switching to Bing which is significantly more lenient with Vercel/Cloud-provider IPs than DDG
+    const searchUrl = `https://www.bing.com/search?q=site:sistani.org/english/qa+${encodeURIComponent(query)}`;
     
     const response = await fetch(searchUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
+        'Referer': 'https://www.bing.com/',
       }
     });
 
     if (!response.ok) {
-        // Fallback for 403: If DDG blocks us, we attempt a direct search on sistani.org
-        const sistaniSearchUrl = `https://www.sistani.org/english/qa/search/?search=${encodeURIComponent(query)}`;
-        const sistaniRes = await fetch(sistaniSearchUrl, { headers: { 'User-Agent': 'Mozilla/5.0' }});
-        
-        if (sistaniRes.ok) {
-           const html = await sistaniRes.text();
+        // Ultimate Fallback: Try a different search provider (Ask.com or similar)
+        const alternateUrl = `https://www.ask.com/web?q=site%3Asistani.org%20${encodeURIComponent(query)}`;
+        const altRes = await fetch(alternateUrl, { headers: { 'User-Agent': 'Mozilla/5.0' }});
+        if (altRes.ok) {
+           const html = await altRes.text();
            const $ = cheerio.load(html);
            const results: any[] = [];
-           
-           $('.item_list_qa').each((i, el) => {
-              const link = $(el).find('a');
-              results.push({
-                title: link.text().trim(),
-                url: `https://www.sistani.org${link.attr('href')}`,
-                snippet: "Direct ruling from Sistani.org",
-                source: 'sistani.org'
-              });
+           $('.PartialSearchResults-item').each((i, el) => {
+              const link = $(el).find('a.PartialSearchResults-item-title-link');
+              if (link.attr('href')?.includes('sistani.org')) {
+                results.push({
+                   title: link.text().trim(),
+                   url: link.attr('href'),
+                   snippet: $(el).find('.PartialSearchResults-item-abstract').text().trim(),
+                   source: 'sistani.org'
+                });
+              }
            });
-           
-           return NextResponse.json({ results: results.slice(0, 5) });
+           if (results.length > 0) return NextResponse.json({ results });
         }
         
-        throw new Error(`Primary and Fallback search failed. Status: ${response.status}`);
+        throw new Error(`All search proxies blocked. Status: ${response.status}`);
     }
 
     const html = await response.text();
     const $ = cheerio.load(html);
     const results: any[] = [];
 
-    // Parse DDG HTML results
-    $('.result__body').each((i, element) => {
-       const link = $(element).find('.result__a');
+    // Parse Bing Results
+    $('.b_algo').each((i, element) => {
+       const link = $(element).find('h2 a');
        const title = link.text().trim();
        const rawUrl = link.attr('href');
-       const snippet = $(element).find('.result__snippet').text().trim();
+       const snippet = $(element).find('.b_caption p, .b_snippet').text().trim();
 
        if (title && rawUrl && rawUrl.toLowerCase().includes('sistani.org')) {
          results.push({
            title: title.replace(' - Sistani.org', '').replace(' | Sistani.org', ''),
            url: rawUrl,
-           snippet: snippet || "View official ruling on Sistani.org",
+           snippet: snippet || "Official ruling from Ayatollah Sistani's QA database.",
            source: 'sistani.org'
          });
        }
     });
+
+    // If still no results, try to fetch the first few QA items from sistani.org directly as a best-effort
+    if (results.length === 0) {
+       const directRes = await fetch(`https://www.sistani.org/english/qa/search/?search=${encodeURIComponent(query)}`, {
+         headers: { 'User-Agent': 'Mozilla/5.0' }
+       });
+       if (directRes.ok) {
+          const directHtml = await directRes.text();
+          const $d = cheerio.load(directHtml);
+          $d('.item_list_qa').each((i, el) => {
+             const link = $d(el).find('a');
+             results.push({
+                title: link.text().trim(),
+                url: `https://www.sistani.org${link.attr('href')}`,
+                snippet: "Direct ruling search result from Sistani.org",
+                source: "sistani.org"
+             });
+          });
+       }
+    }
 
     return NextResponse.json({ results: results.slice(0, 10) });
   } catch (error) {

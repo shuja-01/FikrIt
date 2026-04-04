@@ -25,14 +25,14 @@ export default function VideoPortal() {
     <main className="min-h-screen bg-brand-dark pt-10 pb-20 text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
-        {/* Featured Latest Header */}
+        {/* Featured Header */}
         {latestBarabanki && (
           <div className="relative h-[500px] mb-20 rounded-[40px] overflow-hidden group shadow-2xl animate-in zoom-in-95 duration-1000">
              <div 
                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-               style={{ backgroundImage: `url(${latestBarabanki.thumbnail}), url('/ytThumnail.png')` }}
+               style={{ backgroundImage: `url(${latestBarabanki.thumbnail}), url('/ytThumnail.PNG')` }}
              />
-             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/40 to-transparent" />
+             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent" />
              
              <div className="absolute bottom-16 left-16 max-w-2xl">
                <div className="flex items-center gap-3 mb-6">
@@ -93,9 +93,13 @@ export default function VideoPortal() {
               className="cursor-pointer bg-white/5 border border-white/5 rounded-[32px] overflow-hidden hover:bg-white/10 transition-all group hover:translate-y-[-12px] duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
             >
               <div className="relative aspect-video overflow-hidden">
-                 <img src={video.thumbnail} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onError={(e) => {
-                   (e.target as any).src = '/ytThumnail.png';
-                 }} />
+                 <img 
+                    src={video.thumbnail} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onError={(e) => {
+                      (e.target as any).src = '/ytThumnail.PNG';
+                    }} 
+                 />
                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div className="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-2xl">
                        <Play fill="white" size={32} />
@@ -122,20 +126,21 @@ export default function VideoPortal() {
           ))}
         </div>
 
-        {/* Video Player Modal */}
+        {/* Modal Fix for Restricted Videos */}
         {activeVideoId && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 lg:p-20 bg-black/98 backdrop-blur-3xl animate-in fade-in duration-300">
              <button 
                onClick={() => setActiveVideoId(null)}
-               className="absolute top-10 right-10 p-4 bg-white/10 rounded-full hover:bg-brand-gold text-white transition-all shadow-2xl"
+               className="absolute top-10 right-10 p-4 bg-white/5 rounded-full hover:bg-brand-gold text-white transition-all shadow-2xl hover:scale-110 duration-300"
              >
-                <X size={32} />
+                <X size={40} />
              </button>
-             <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/10 animate-in zoom-in-95 duration-500">
+             <div className="w-full h-full max-w-7xl max-h-[85vh] rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(212,175,55,0.2)] border border-white/10 animate-in zoom-in-95 duration-500 bg-black">
                 <iframe 
+                  key={activeVideoId}
                   className="w-full h-full"
-                  src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=1`}
-                  title="Spiritual Enlightenment Video"
+                  src={`https://www.youtube.com/embed/${activeVideoId}?autoplay=1&rel=0&modestbranding=1`}
+                  title="YouTube Playback"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -145,7 +150,7 @@ export default function VideoPortal() {
         )}
 
         {filteredVideos.length === 0 && (
-           <div className="py-40 text-center text-gray-600 font-medium animate-pulse">
+           <div className="py-40 text-center text-gray-600 font-medium animate-pulse m-auto">
               No matching spiritual videos found for your current filter.
            </div>
         )}
