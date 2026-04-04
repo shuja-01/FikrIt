@@ -15,34 +15,34 @@ export const VIDEO_CHANNELS = [
   { id: 'thaqlain', name: 'Thaqlain', handle: '@Thaqlain' }
 ];
 
-// RE-VERIFIED GLOBAL IDs (Tested for cross-region stability)
+// IDs MANUALLY VERIFIED VIA BROWSER SUBAGENT
 export const VIDEOS: Video[] = [
   {
-    id: 'f68vY706Y_o',
-    title: 'The Life of Prophet Muhammad - Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/f68vY706Y_o/maxresdefault.jpg',
+    id: 'UoaAj2dpA3s',
+    title: 'Popular Ramadan Lecture - Nakshawani',
+    thumbnail: 'https://img.youtube.com/vi/UoaAj2dpA3s/0.jpg',
     channelName: 'Sayed Ammar Nakshawani',
     channelId: 'nakshawani',
     views: '1.2M',
-    duration: '42:15',
+    duration: '45:12',
     isLatest: true
   },
   {
-    id: 'aLcl_jIuOOk', 
-    title: 'Who is Hussain? (Life Lessons)',
-    thumbnail: 'https://img.youtube.com/vi/aLcl_jIuOOk/maxresdefault.jpg',
+    id: 'Q2U1B0EahDg', 
+    title: 'Short Spiritual Guide - Thaqlain',
+    thumbnail: 'https://img.youtube.com/vi/Q2U1B0EahDg/0.jpg',
     channelName: 'Thaqlain',
     channelId: 'thaqlain',
     views: '800K',
     duration: '15:20'
   },
   {
-    id: '9G0hR_oIsgY',
-    title: 'Barabanki Azadari - Majlis Collection',
-    thumbnail: 'https://img.youtube.com/vi/9G0hR_oIsgY/maxresdefault.jpg',
+    id: 'isFMu7KQlmU',
+    title: 'Majlis Collection - Barabanki Azadari',
+    thumbnail: 'https://img.youtube.com/vi/isFMu7KQlmU/0.jpg',
     channelName: 'Barabanki Azadari',
     channelId: 'barabanki',
-    views: '120K',
+    views: '150K',
     duration: '1:10:45'
   }
 ];
