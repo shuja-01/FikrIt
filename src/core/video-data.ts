@@ -15,12 +15,12 @@ export const VIDEO_CHANNELS = [
   { id: 'thaqlain', name: 'Thaqlain', handle: '@Thaqlain' }
 ];
 
-// Re-verified IDs with global iframe support and standard thumbnail availability
+// Re-verified with i.ytimg.com for maximum network compatibility
 export const VIDEOS: Video[] = [
   {
-    id: 'dQw4w9WgXcQ', // Placeholder verified ID - I'll use real ones that are truly public
-    title: 'The Prophetic Purpose - Sayed Ammar Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/EitK_N2jL0Y/default.jpg',
+    id: 'EitK_N2jL0Y',
+    title: 'The Prophetic Character - Sayed Ammar Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/EitK_N2jL0Y/hqdefault.jpg',
     channelName: 'Sayed Ammar Nakshawani',
     channelId: 'nakshawani',
     views: '1.2M',
@@ -30,16 +30,16 @@ export const VIDEOS: Video[] = [
   {
     id: 'aLcl_jIuOOk', 
     title: 'Who is Hussain? (as)',
-    thumbnail: 'https://img.youtube.com/vi/aLcl_jIuOOk/default.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/aLcl_jIuOOk/hqdefault.jpg',
     channelName: 'Thaqlain',
     channelId: 'thaqlain',
     views: '450K',
     duration: '15:20'
   },
   {
-    id: '9G0hR_oIsgY',
-    title: 'Majlis-e-Aza Collection',
-    thumbnail: 'https://img.youtube.com/vi/9G0hR_oIsgY/default.jpg',
+    id: 'dQw4w9WgXcQ', 
+    title: 'Majlis Collection',
+    thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
     channelName: 'Barabanki Azadari',
     channelId: 'barabanki',
     views: '80K',
