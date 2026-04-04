@@ -36,11 +36,7 @@ export default function SetupProfile() {
       // the session state on the next page load.
       // Use window.location.href for the home page to force a 
       // full reload, ensuring the stale session is cleared.
-      if (role === "DEENI_GUIDE") {
-        router.push("/pending-approval");
-      } else {
-        window.location.href = "/";
-      }
+      window.location.href = role === "DEENI_GUIDE" ? "/pending-approval" : "/";
       
       // Update session in the background
       update();
