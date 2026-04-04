@@ -3,8 +3,18 @@ import type { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 
 export async function proxy(request: NextRequest) {
-  const session = await auth();
   const { pathname } = request.nextUrl;
+  const isAuthRoute = pathname.startsWith('/api/auth');
+  const isPendingPage = pathname.includes('/pending-approval');
+  
+  // 1. VIP Bypass (Highest Priority)
+  // This MUST run before auth() to prevent middleware deadlocks.
+  const hasJustSetup = request.cookies.get('fikrit_setup_success');
+  if (hasJustSetup?.value === 'true' && !isAuthRoute && !isPendingPage && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+     return NextResponse.next();
+  }
+
+  const session = await auth();
 
   // 1. IP Restriction for /fikradmin
   if (pathname.startsWith('/fikradmin')) {
@@ -26,9 +36,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const isAuthRoute = pathname.startsWith('/api/auth');
-  const isPendingPage = pathname.includes('/pending-approval');
-  
   if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
 
     const userRole = (session.user as any).role;
