@@ -51,7 +51,7 @@ export default function AuthButton() {
 
   return (
     <button 
-      onClick={() => signIn("google")}
+      onClick={() => signIn("google", { prompt: "select_account" })}
       className="flex items-center gap-2 px-4 py-2 bg-brand-dark text-white rounded-full text-sm font-medium hover:bg-black transition-colors shadow-lg hover:shadow-xl"
     >
       Sign In <User size={16} />

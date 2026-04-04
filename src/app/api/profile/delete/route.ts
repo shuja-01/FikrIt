@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/core/db';
 
+export async function GET() {
+  return NextResponse.json({ error: 'Method Not Allowed. Use DELETE instead.' }, { status: 405 });
+}
+
 export async function DELETE() {
   const session = await auth();
 
