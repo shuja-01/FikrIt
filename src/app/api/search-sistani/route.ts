@@ -72,8 +72,8 @@ export async function GET(request: Request) {
       const html = await mojeekRes.text();
       const $m = cheerio.load(html);
       const results: any[] = [];
-      $('.results li').each((i, el) => {
-         const link = $(el).find('a.t');
+      $m('.results li').each((i, el) => {
+         const link = $m(el).find('a.t');
          if (link.attr('href')?.includes('/english/qa/')) {
             results.push({
                title: link.text().trim().replace(' - Sistani.org', ''),
