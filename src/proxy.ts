@@ -8,16 +8,22 @@ export async function proxy(request: NextRequest) {
 
   // 1. IP Restriction for /fikradmin
   if (pathname.startsWith('/fikradmin')) {
-    const forwardHeader = request.headers.get('x-forwarded-for');
-    const clientIp = forwardHeader ? forwardHeader.split(',')[0].trim() : '127.0.0.1';
+    const realIp = request.headers.get('x-real-ip');
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const clientIp = realIp || (forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1');
     
     // User's provided IP from Vercel env
     const allowedIp = process.env.ADMIN_IP || '60.53.126.63'; 
     
+    console.log(`[PROXY] Admin attempt from IP: ${clientIp} (Target: ${allowedIp})`);
+    
     if (clientIp !== allowedIp) {
-      console.log(`Unauthorized access attempt from IP: ${clientIp}`);
+      console.log(`[PROXY] Unauthorized IP: ${clientIp}. Access denied.`);
       return NextResponse.redirect(new URL('/', request.url));
     }
+    
+    // Admins bypass all other checks on this request
+    return NextResponse.next();
   }
 
   // 2. Profile Setup Redirect
