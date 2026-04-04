@@ -4,7 +4,7 @@ import { User, ArrowRight, Loader2 } from "lucide-react";
 
 interface Props {
   isLoading: boolean;
-  onComplete: (role: "USER") => void;
+  onComplete: (data: { role: "USER" }) => void;
   error?: string;
 }
 
@@ -27,7 +27,7 @@ export function StandardOnboarding({ isLoading, onComplete, error }: Props) {
         )}
 
         <button 
-          onClick={() => onComplete("USER")}
+          onClick={() => onComplete({ role: "USER" })}
           disabled={isLoading}
           className="w-full sm:w-auto px-12 py-5 bg-brand-dark text-white rounded-full font-bold flex items-center justify-center gap-3 hover:bg-black transition-all shadow-2xl hover:shadow-brand-gold/20 disabled:opacity-50 mx-auto group"
         >
