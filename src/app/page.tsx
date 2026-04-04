@@ -11,9 +11,9 @@ export default function Home() {
       <nav className="fixed top-0 inset-x-0 glass-panel border-b-0 m-4 p-4 flex justify-between items-center z-50">
         <div className="flex items-center gap-3">
           {/* Real Logo from public folder */}
-          <div className="w-10 h-10 relative overflow-hidden rounded-md border border-gray-100 bg-white shadow-sm">
+          <div className="w-16 h-16 relative overflow-hidden rounded-md border border-gray-100 bg-white shadow-sm">
              <Image 
-               src="/logo.jpg" 
+               src="/logo.jpeg" 
                alt="Fikrit Logo" 
                fill 
                className="object-contain"
@@ -106,7 +106,18 @@ export default function Home() {
       </section>
       
       {/* Footer */}
-      <footer className="text-center py-10 text-gray-400 text-sm border-t border-gray-200">
+      <footer className="text-center py-16 text-gray-400 text-sm border-t border-gray-200 bg-white/30">
+        <div className="flex flex-col items-center gap-6 mb-8">
+          <div className="relative w-48 h-16 overflow-hidden">
+            <Image 
+              src="/fikritFull-logo.jpg" 
+              alt="Fikrit Full Logo" 
+              fill 
+              className="object-contain"
+            />
+          </div>
+          <p className="max-w-xs text-xs italic">"Empowering the community through shared thinking and authentic knowledge."</p>
+        </div>
         &copy; {new Date().getFullYear()} Fikrit - Share Your Thinking.
       </footer>
     </main>
