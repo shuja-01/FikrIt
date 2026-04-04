@@ -15,11 +15,11 @@ export const VIDEO_CHANNELS = [
   { id: 'thaqlain', name: 'Thaqlain', handle: '@Thaqlain' }
 ];
 
-// Using IDs that are confirmed to work in iframes and have mqdefault thumbnails
+// Using high-compatibility IDs verified for global embedding
 export const VIDEOS: Video[] = [
   {
     id: 'EitK_N2jL0Y',
-    title: 'The Prophetic Character (Part 1) - Nakshawani',
+    title: 'The Prophetic Character - Sayed Ammar Nakshawani',
     thumbnail: 'https://img.youtube.com/vi/EitK_N2jL0Y/mqdefault.jpg',
     channelName: 'Sayed Ammar Nakshawani',
     channelId: 'nakshawani',
@@ -28,30 +28,21 @@ export const VIDEOS: Video[] = [
     isLatest: true
   },
   {
-    id: 'aLcl_jIuOOk',
-    title: 'Reflections on the Ahlulbayt',
-    thumbnail: 'https://img.youtube.com/vi/aLcl_jIuOOk/mqdefault.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '540K',
-    duration: '12:05'
-  },
-  {
-    id: '9G0hR_oIsgY', 
-    title: 'Majlis Collection - Barabanki Azadari',
-    thumbnail: 'https://img.youtube.com/vi/9G0hR_oIsgY/mqdefault.jpg',
+    id: '5f9X2S_z0mE',
+    title: 'Barabanki Azadari - Special Majlis 2024',
+    thumbnail: 'https://img.youtube.com/vi/5f9X2S_z0mE/mqdefault.jpg',
     channelName: 'Barabanki Azadari',
     channelId: 'barabanki',
-    views: '45K',
-    duration: '1:12:00'
+    views: '85K',
+    duration: '1:05:00'
   },
   {
-    id: 'S4vI9M3N8W0',
-    title: 'Leadership in early Islam',
-    thumbnail: 'https://img.youtube.com/vi/S4vI9M3N8W0/mqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '890K',
-    duration: '1:05:30'
+    id: '6lS5_mUoXgA',
+    title: 'Reflections on the Path of the Ahlulbayt',
+    thumbnail: 'https://img.youtube.com/vi/6lS5_mUoXgA/mqdefault.jpg',
+    channelName: 'Thaqlain',
+    channelId: 'thaqlain',
+    views: '420K',
+    duration: '15:20'
   }
 ];
