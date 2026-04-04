@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { BookOpen, HelpCircle, Video, TrendingUp, Sun, BookMarked, User } from "lucide-react";
+import Image from "next/image";
+import AuthButton from "./components/AuthButton";
+import { BookOpen, HelpCircle, Video, TrendingUp, Sun, BookMarked, Search } from "lucide-react";
 
 export default function Home() {
   return (
@@ -7,11 +9,14 @@ export default function Home() {
       {/* Navigation */}
       <nav className="fixed top-0 inset-x-0 glass-panel border-b-0 m-4 p-4 flex justify-between items-center z-50">
         <div className="flex items-center gap-3">
-          {/* Logo representation */}
-          <div className="w-8 h-8 relative flex items-center justify-center">
-            <div className="absolute inset-x-1 bottom-0 h-4 border-l-4 border-r-4 border-t-4 border-brand-gold rounded-t-lg"></div>
-            <div className="absolute -bottom-1 -left-1 w-3 h-2 bg-brand-gold"></div>
-            <div className="absolute -bottom-1 -right-1 w-3 h-2 bg-brand-gold"></div>
+          {/* Real Logo from public folder */}
+          <div className="w-10 h-10 relative overflow-hidden rounded-md border border-gray-100 bg-white">
+             <Image 
+               src="/logo.jpg" 
+               alt="Fikrit Logo" 
+               fill 
+               className="object-contain"
+             />
           </div>
           <span className="text-xl font-serif font-bold tracking-widest uppercase">Fikrit</span>
         </div>
@@ -19,12 +24,17 @@ export default function Home() {
           <Link href="/forum" className="hover:text-brand-gold transition-colors">Q&A Forum</Link>
           <Link href="/articles" className="hover:text-brand-gold transition-colors">Articles</Link>
           <Link href="/videos" className="hover:text-brand-gold transition-colors">Videos</Link>
-          <Link href="/books" className="hover:text-brand-gold transition-colors">Books</Link>
+          <a 
+            href="https://archive.org/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-brand-gold transition-colors"
+          >
+            Books
+          </a>
         </div>
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 px-4 py-2 bg-brand-dark text-white rounded-full text-sm font-medium hover:bg-black transition-colors shadow-lg hover:shadow-xl">
-             Sign In <User size={16} />
-          </button>
+          <AuthButton />
         </div>
       </nav>
 
@@ -44,13 +54,35 @@ export default function Home() {
           </p>
           
           <div className="flex flex-wrap gap-4">
-            <button className="px-6 py-3 bg-brand-gold text-white rounded-full font-semibold hover:bg-yellow-600 transition-all shadow-xl shadow-brand-gold/20 flex items-center gap-2">
+            <Link href="/ask" className="px-6 py-3 bg-brand-gold text-white rounded-full font-semibold hover:bg-yellow-600 transition-all shadow-xl shadow-brand-gold/20 flex items-center gap-2">
               <HelpCircle size={18} /> Ask a Question
-            </button>
-            <button className="px-6 py-3 bg-white text-brand-dark border border-gray-200 rounded-full font-semibold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm">
+            </Link>
+            <Link href="/videos" className="px-6 py-3 bg-white text-brand-dark border border-gray-200 rounded-full font-semibold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm">
               <Video size={18} /> Watch Latest Videos
-            </button>
+            </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Forum Search Section - Sistani Integrated */}
+      <section className="px-6 md:px-12 lg:px-24 pb-12">
+        <div className="max-w-2xl mx-auto glass-panel p-6 shadow-xl">
+           <div className="flex items-center gap-2 mb-4 text-brand-gold font-bold">
+              <Search size={20} /> Forum Search
+           </div>
+           <form className="flex flex-col md:flex-row gap-2">
+              <input 
+                 type="text" 
+                 placeholder="Search questions or rulings (includes Sistani.org)..." 
+                 className="flex-grow px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-all"
+              />
+              <button className="px-6 py-3 bg-brand-gold text-white rounded-xl font-semibold hover:brightness-110 transition-all">
+                 Search
+              </button>
+           </form>
+           <p className="mt-3 text-xs text-gray-400 text-center">
+             *Results will include existing community discussions and official Sistani.org English rulings.
+           </p>
         </div>
       </section>
 
@@ -72,14 +104,18 @@ export default function Home() {
 
           {/* Tools Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center flex-col justify-center text-center hover:translate-y-[-2px] transition-transform cursor-pointer">
+            <Link href="/discussions" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center flex-col justify-center text-center hover:translate-y-[-2px] transition-transform cursor-pointer">
               <TrendingUp className="text-emerald-600 mb-2" size={24} />
               <span className="font-medium text-sm">Trending<br/>Discussions</span>
-            </div>
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center flex-col justify-center text-center hover:translate-y-[-2px] transition-transform cursor-pointer">
+            </Link>
+            <a 
+              href="https://archive.org/" 
+              target="_blank" 
+              className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center flex-col justify-center text-center hover:translate-y-[-2px] transition-transform cursor-pointer"
+            >
               <BookMarked className="text-blue-600 mb-2" size={24} />
               <span className="font-medium text-sm">Top Books<br/>Library</span>
-            </div>
+            </a>
           </div>
 
         </div>

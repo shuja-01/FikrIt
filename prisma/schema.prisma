@@ -44,11 +44,13 @@ model User {
   
   // Custom Fikrit User Fields
   role          Role      @default(USER)
+  isApproved    Boolean   @default(true) // Normal users auto-approved, Maulanas set to false when they request the role
   points        Int       @default(0)
   badges        String[]  @default([])
   questions     Question[]
   answers       Answer[]
   bookmarks     Bookmark[]
+  assignedQuestions Question[] @relation("QuestionAssignments")
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -63,7 +65,7 @@ model VerificationToken {
 
 enum Role {
   USER
-  SCHOLAR
+  MAULANA
   ADMIN
 }
 
@@ -78,6 +80,7 @@ model Question {
   author    User     @relation(fields: [authorId], references: [id])
   answers   Answer[]
   tags      String[]
+  assignedTo User[] @relation("QuestionAssignments")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
