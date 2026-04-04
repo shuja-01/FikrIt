@@ -34,7 +34,12 @@ export default function SetupProfile() {
 
       // Update session to reflect new role/fields
       await update();
-      router.push("/");
+      
+      if (role === "DEENI_GUIDE") {
+        router.push("/pending-approval");
+      } else {
+        router.push("/");
+      }
       router.refresh();
     } catch (err: any) {
       setError(err.message);

@@ -22,15 +22,23 @@ export async function proxy(request: NextRequest) {
 
   // 2. Profile Setup Redirect
   const isAuthRoute = pathname.startsWith('/api/auth');
+  const isPendingPage = pathname.includes('/pending-approval');
+  
   if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
     const userRole = (session.user as any).role;
     const phone = (session.user as any).phone;
+    const isApproved = (session.user as any).isApproved;
     
     // A user is NOT onboarded if they have no role. User must explicitly pick a role during setup.
-    // This allows us to force setup even if the database assigned a placeholder role.
     if (!userRole || !phone) {
        console.log(`[PROXY] Redirecting user ${session.user.email} to setup-profile`);
        return NextResponse.redirect(new URL('/setup-profile', request.url));
+    }
+
+    // 3. Deeni Guide Approval Check
+    if (userRole === 'DEENI_GUIDE' && isApproved === false && !isPendingPage) {
+       console.log(`[PROXY] Redirecting pending guide ${session.user.email} to approval page`);
+       return NextResponse.redirect(new URL('/pending-approval', request.url));
     }
   }
 
