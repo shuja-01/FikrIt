@@ -10,6 +10,8 @@ export default function ForumSearch() {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
+  const [moreLink, setMoreLink] = useState<string | null>(null);
+
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
@@ -17,11 +19,13 @@ export default function ForumSearch() {
     setLoading(true);
     setError(null);
     setHasSearched(true);
+    setMoreLink(null);
     try {
       const res = await fetch(`/api/search-sistani?q=${encodeURIComponent(query)}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       setResults(data.results || []);
+      setMoreLink(data.moreLink || null);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Failed to fetch results. Sistani.org might be temporarily unavailable.");
@@ -42,7 +46,7 @@ export default function ForumSearch() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search questions or rulings (includes Sistani.org)..." 
-            className="flex-grow px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-all"
+            className="flex-grow px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-all bg-white"
           />
           <button 
             type="submit"
@@ -66,34 +70,61 @@ export default function ForumSearch() {
       {hasSearched && !loading && !error && results.length === 0 && (
         <div className="bg-white border border-gray-100 text-gray-500 p-12 rounded-xl text-center animate-in fade-in zoom-in-95">
           <p className="font-medium mb-1">No results found for "{query}"</p>
-          <p className="text-xs">Try broader keywords or search directly on <a href="https://www.sistani.org/english/qa/" target="_blank" className="text-brand-gold underline font-bold">Sistani.org</a></p>
+          <p className="text-xs">Try broader keywords or search directly on <a href={moreLink || "https://www.sistani.org/english/qa/"} target="_blank" className="text-brand-gold underline font-bold">Sistani.org</a></p>
         </div>
       )}
 
       {results.length > 0 && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider px-2">Search Results</h3>
-          {results.map((result, idx) => (
-            <div key={idx} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <a 
-                href={result.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-lg font-serif font-bold text-brand-dark hover:text-brand-gold transition-colors flex items-center justify-between group"
-              >
-                {result.title}
-                <ExternalLink size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-              <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                {result.snippet}
-              </p>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="text-[10px] bg-brand-sand text-brand-gold px-2 py-1 rounded-full font-bold uppercase tracking-tighter">
-                  {result.source}
-                </span>
+          <div className="flex items-center justify-between px-2 mb-2">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Top Results</h3>
+            {moreLink && (
+               <a 
+                 href={moreLink} 
+                 target="_blank" 
+                 className="text-xs font-bold text-brand-gold hover:underline flex items-center gap-1"
+               >
+                 View More on Sistani.org <ExternalLink size={10} />
+               </a>
+            )}
+          </div>
+          
+          <div className="grid gap-4">
+            {results.slice(0, 2).map((result, idx) => (
+              <div key={idx} className="bg-white rounded-xl p-5 border-l-4 border-l-brand-gold border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative">
+                <a 
+                  href={result.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-lg font-serif font-bold text-brand-dark group-hover:text-brand-gold transition-colors block mb-2"
+                >
+                  {result.title}
+                </a>
+                <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">
+                  {result.snippet}
+                </p>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="text-[10px] bg-brand-sand text-brand-gold px-2 py-1 rounded-full font-black uppercase tracking-widest">
+                    OFFICIAL RULING
+                  </span>
+                  <a href={result.url} target="_blank" className="text-xs text-gray-400 hover:text-brand-gold font-bold">Read full QA &rarr;</a>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {results.length > 2 && (
+             <div className="bg-brand-sand/30 border border-brand-gold/10 p-6 rounded-2xl text-center mt-6">
+                <p className="text-sm text-brand-dark font-medium mb-2">Want to explore more detailed rulings on this topic?</p>
+                <a 
+                   href={moreLink || `https://www.sistani.org/english/qa/search/?search=${encodeURIComponent(query)}`}
+                   target="_blank"
+                   className="inline-flex items-center gap-2 bg-brand-gold text-white px-6 py-2.5 rounded-full text-xs font-bold hover:brightness-110 transition-all shadow-lg shadow-brand-gold/20"
+                >
+                   Go to Sistani.org for more results <ExternalLink size={14} />
+                </a>
+             </div>
+          )}
         </div>
       )}
     </div>
