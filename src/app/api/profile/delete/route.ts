@@ -27,7 +27,15 @@ export async function DELETE() {
     });
 
     console.log(`[DELETE_API] Successfully deleted user record for: ${deletedUser.email}`);
-    return NextResponse.json({ success: true, message: 'Account deleted successfully' });
+    
+    // CRITICAL: Expunge the VIP Bypass cookie to ensure a clean re-onboarding
+    return new Response(JSON.stringify({ success: true, message: 'Account deleted successfully' }), {
+      status: 200,
+      headers: {
+        'Set-Cookie': 'fikrit_setup_success=; Path=/; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error: any) {
     console.error('[DELETE_API] Error deleting account:', error);
     return NextResponse.json({ 
