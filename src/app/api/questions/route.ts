@@ -37,8 +37,9 @@ export async function POST(request: Request) {
       }
 
       // Find the one with the minimum count
-      const leastBusyGuide = guides.reduce((prev, curr) => 
-        prev._count.assignedQuestions < curr._count.assignedQuestions ? prev : curr
+      const leastBusyGuide = guides.reduce((prev: any, curr: any) => 
+        (prev._count?.assignedQuestions ?? 0) < (curr._count?.assignedQuestions ?? 0) ? prev : curr,
+        guides[0]
       );
 
       selectedGuideId = leastBusyGuide.id;

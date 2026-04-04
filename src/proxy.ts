@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { auth } from '@/auth';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const session = await auth();
   const { pathname } = request.nextUrl;
 
@@ -25,13 +25,8 @@ export async function middleware(request: NextRequest) {
     const userRole = (session.user as any).role;
     
     // If user has no role defined yet, they MUST complete the setup
-    if (!userRole || userRole === 'USER' && (session.user as any).phone === null && (session.user as any).gender === null) {
-       // We only redirect if they are a standard USER who hasn't been "onboarded" yet.
-       // For now, let's just check if role is missing or they are 'USER' but haven't been 'processed' by our setup.
-       // Note: Standard users are auto-approved, so we check for presence of role specifically.
-       if (!userRole) {
-         return NextResponse.redirect(new URL('/setup-profile', request.url));
-       }
+    if (!userRole) {
+       return NextResponse.redirect(new URL('/setup-profile', request.url));
     }
   }
 

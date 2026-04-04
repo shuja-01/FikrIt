@@ -1,4 +1,4 @@
-import { DefaultSession } from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth"
 
 declare module "next-auth" {
   interface Session {
@@ -6,11 +6,28 @@ declare module "next-auth" {
       id: string;
       role: string;
       isApproved: boolean;
-    } & DefaultSession["user"];
+      phone: string | null;
+      gender: string | null;
+      marjae: string | null;
+    } & DefaultSession["user"]
   }
 
   interface User {
     role: string;
     isApproved: boolean;
+    phone: string | null;
+    gender: string | null;
+    marjae: string | null;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    role: string;
+    isApproved: boolean;
+    phone: string | null;
+    gender: string | null;
+    marjae: string | null;
   }
 }
