@@ -3,9 +3,9 @@ import { prisma } from '@/core/db';
 
 export async function GET() {
   try {
-    const maulanas = await prisma.user.findMany({
+    const guides = await prisma.user.findMany({
       where: {
-        role: 'MAULANA',
+        role: 'DEENI_GUIDE',
         isApproved: true,
       },
       select: {
@@ -14,8 +14,8 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(maulanas);
+    return NextResponse.json(guides);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch Maulanas' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch Deeni Guides' }, { status: 500 });
   }
 }

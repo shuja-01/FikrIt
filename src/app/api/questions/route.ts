@@ -9,20 +9,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { title, content, maulanaId } = await request.json();
+  const { title, content, guideId } = await request.json();
 
   if (!title || !content) {
     return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
   }
 
   try {
-    let selectedMaulanaId = maulanaId;
+    let selectedGuideId = guideId;
 
-    // Auto-assignment logic if no Maulana was selected
-    if (!selectedMaulanaId) {
-      const maulanas = await prisma.user.findMany({
+    // Auto-assignment logic if no Deeni Guide was selected
+    if (!selectedGuideId) {
+      const guides = await prisma.user.findMany({
         where: {
-          role: 'MAULANA',
+          role: 'DEENI_GUIDE',
           isApproved: true,
         },
         include: {
@@ -32,16 +32,16 @@ export async function POST(request: Request) {
         },
       });
 
-      if (maulanas.length === 0) {
-        return NextResponse.json({ error: 'No approved Maulanas available for assignment' }, { status: 503 });
+      if (guides.length === 0) {
+        return NextResponse.json({ error: 'No approved Deeni Guides available for assignment' }, { status: 503 });
       }
 
       // Find the one with the minimum count
-      const leastBusyMaulana = maulanas.reduce((prev, curr) => 
+      const leastBusyGuide = guides.reduce((prev, curr) => 
         prev._count.assignedQuestions < curr._count.assignedQuestions ? prev : curr
       );
 
-      selectedMaulanaId = leastBusyMaulana.id;
+      selectedGuideId = leastBusyGuide.id;
     }
 
     const question = await prisma.question.create({
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         content,
         authorId: (session.user as any).id,
         assignedTo: {
-          connect: { id: selectedMaulanaId },
+          connect: { id: selectedGuideId },
         },
       },
     });

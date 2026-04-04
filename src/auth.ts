@@ -10,18 +10,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt"
   },
-  cookies: {
-    sessionToken: {
-      name: `__Secure-authjs.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
-        domain: "fikrit.co", // Explicitly bind cookies to your domain
-      },
-    },
-  },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -35,6 +23,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.role = (user as any).role;
         token.isApproved = (user as any).isApproved;
         token.id = user.id;
+        token.phone = (user as any).phone;
+        token.gender = (user as any).gender;
+        token.marjae = (user as any).marjae;
       }
       return token;
     },
@@ -43,6 +34,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.role = token.role as string;
         session.user.isApproved = token.isApproved as boolean;
         session.user.id = token.id as string;
+        session.user.phone = token.phone as string;
+        session.user.gender = token.gender as string;
+        session.user.marjae = token.marjae as string;
       }
       return session;
     }

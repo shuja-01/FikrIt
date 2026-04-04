@@ -44,7 +44,10 @@ model User {
   
   // Custom Fikrit User Fields
   role          Role      @default(USER)
-  isApproved    Boolean   @default(true) // Normal users auto-approved, Maulanas set to false when they request the role
+  isApproved    Boolean   @default(true) // Normal users auto-approved, Guides set to false when they request the role
+  phone         String?
+  gender        String?   // "male" | "female"
+  marjae        String?   // Marja-e-Taqleed
   points        Int       @default(0)
   badges        String[]  @default([])
   questions     Question[]
@@ -65,7 +68,7 @@ model VerificationToken {
 
 enum Role {
   USER
-  MAULANA
+  DEENI_GUIDE
   ADMIN
 }
 
