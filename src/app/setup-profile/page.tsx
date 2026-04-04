@@ -32,14 +32,16 @@ export default function SetupProfile() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update profile");
 
-      // Update session to reflect new role/fields
-      await update();
-      
+      // Redirect immediately based on selection, the proxy/middleware will handle 
+      // the session state on the next page load.
       if (role === "DEENI_GUIDE") {
         router.push("/pending-approval");
       } else {
         router.push("/");
       }
+      
+      // Update session in the background
+      update();
       router.refresh();
     } catch (err: any) {
       setError(err.message);
