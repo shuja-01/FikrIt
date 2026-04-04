@@ -7,18 +7,24 @@ export default function ForumSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
 
     setLoading(true);
+    setError(null);
+    setHasSearched(true);
     try {
       const res = await fetch(`/api/search-sistani?q=${encodeURIComponent(query)}`);
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
       setResults(data.results || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setError(err.message || "Failed to fetch results. Sistani.org might be temporarily unavailable.");
     } finally {
       setLoading(false);
     }
@@ -50,6 +56,19 @@ export default function ForumSearch() {
           *Results will include community discussions and official Sistani.org rulings.
         </p>
       </div>
+
+      {error && (
+        <div className="bg-red-50 border border-red-100 text-red-600 p-4 rounded-xl text-center text-sm animate-in fade-in zoom-in-95">
+          {error}
+        </div>
+      )}
+
+      {hasSearched && !loading && !error && results.length === 0 && (
+        <div className="bg-white border border-gray-100 text-gray-500 p-12 rounded-xl text-center animate-in fade-in zoom-in-95">
+          <p className="font-medium mb-1">No results found for "{query}"</p>
+          <p className="text-xs">Try broader keywords or search directly on <a href="https://www.sistani.org/english/qa/" target="_blank" className="text-brand-gold underline font-bold">Sistani.org</a></p>
+        </div>
+      )}
 
       {results.length > 0 && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">

@@ -29,21 +29,31 @@ export async function GET(request: Request) {
     const $ = cheerio.load(html);
     const results: any[] = [];
 
+    // DuckDuckGo HTML version selectors
     $('.result').each((i, element) => {
-      const title = $(element).find('.result__title a').text();
-      const url = $(element).find('.result__snippet').attr('href');
-      const snippet = $(element).find('.result__snippet').text();
+      const titleLink = $(element).find('.result__title a');
+      const title = titleLink.text().trim();
+      const rawUrl = titleLink.attr('href');
+      const snippet = $(element).find('.result__snippet').text().trim();
 
-      if (title && snippet) {
+      if (title && rawUrl) {
+        // Clean the URL if it's a DuckDuckGo redirect
+        let finalUrl = rawUrl;
+        if (rawUrl.includes('uddg=')) {
+           const match = rawUrl.match(/uddg=([^&]+)/);
+           if (match) finalUrl = decodeURIComponent(match[1]);
+        }
+
         results.push({
           title,
-          url: url?.startsWith('http') ? url : `https://duckduckgo.com${url}`,
-          snippet,
+          url: finalUrl,
+          snippet: snippet || "Click to view ruling details on Sistani.org",
           source: 'sistani.org'
         });
       }
     });
 
+    console.log(`Search for "${query}" returned ${results.length} results.`);
     return NextResponse.json({ results });
   } catch (error) {
     console.error('Sistani search error:', error);

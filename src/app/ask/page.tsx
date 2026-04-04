@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { HelpCircle, ChevronLeft, Loader2, CheckCircle2, UserCheck, Shuffle } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import AuthButton from "../components/AuthButton";
 
 export default function AskQuestion() {
   const router = useRouter();
@@ -34,8 +35,19 @@ export default function AskQuestion() {
   }, []);
 
   if (status === "unauthenticated") {
-     router.push("/");
-     return null;
+     return (
+       <main className="min-h-screen bg-brand-sand pt-40 px-6 text-center">
+         <div className="glass-panel p-12 max-w-lg mx-auto shadow-xl">
+           <UserCheck className="mx-auto text-brand-gold mb-6 opacity-20" size={64} />
+           <h2 className="text-3xl font-serif font-bold text-brand-dark mb-4">Sign In Required</h2>
+           <p className="text-gray-500 mb-8">You need to be signed in to ask a question to our scholars.</p>
+           <AuthButton />
+           <div className="mt-8">
+             <Link href="/" className="text-brand-gold font-bold hover:underline">Back to Home</Link>
+           </div>
+         </div>
+       </main>
+     );
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
