@@ -35,9 +35,12 @@ export async function proxy(request: NextRequest) {
     const phone = (session.user as any).phone;
     const isApproved = (session.user as any).isApproved;
     
-    // A user is NOT onboarded if they have no role. User must explicitly pick a role during setup.
-    // However, we MUST allow them to reach the pending-approval page even if the session is stale.
-    if ((!userRole || !phone) && !isPendingPage) {
+    // A user is NOT onboarded if:
+    // 1. They have no role at all.
+    // 2. They are a Deeni Guide but are missing their phone number (mandatory for guides).
+    const isMissingOnboarding = !userRole || (userRole === 'DEENI_GUIDE' && !phone);
+    
+    if (isMissingOnboarding && !isPendingPage) {
        console.log(`[PROXY] Redirecting user ${session.user.email} to setup-profile`);
        return NextResponse.redirect(new URL('/setup-profile', request.url));
     }
