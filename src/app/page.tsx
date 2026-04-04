@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import AuthButton from "./components/AuthButton";
-import { BookOpen, HelpCircle, Video, TrendingUp, Sun, BookMarked, Search } from "lucide-react";
+import { HelpCircle, Video, Sun, TrendingUp, BookMarked } from "lucide-react";
+import ForumSearch from "./components/ForumSearch";
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
       <nav className="fixed top-0 inset-x-0 glass-panel border-b-0 m-4 p-4 flex justify-between items-center z-50">
         <div className="flex items-center gap-3">
           {/* Real Logo from public folder */}
-          <div className="w-10 h-10 relative overflow-hidden rounded-md border border-gray-100 bg-white">
+          <div className="w-10 h-10 relative overflow-hidden rounded-md border border-gray-100 bg-white shadow-sm">
              <Image 
                src="/logo.jpg" 
                alt="Fikrit Logo" 
@@ -18,9 +19,9 @@ export default function Home() {
                className="object-contain"
              />
           </div>
-          <span className="text-xl font-serif font-bold tracking-widest uppercase">Fikrit</span>
+          <span className="text-xl font-serif font-bold tracking-widest uppercase text-brand-dark">Fikrit</span>
         </div>
-        <div className="hidden md:flex items-center gap-6 font-medium text-sm">
+        <div className="hidden md:flex items-center gap-6 font-medium text-sm text-gray-700">
           <Link href="/forum" className="hover:text-brand-gold transition-colors">Q&A Forum</Link>
           <Link href="/articles" className="hover:text-brand-gold transition-colors">Articles</Link>
           <Link href="/videos" className="hover:text-brand-gold transition-colors">Videos</Link>
@@ -39,51 +40,34 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 sm:px-12 lg:px-24 overflow-hidden">
+      <section className="relative pt-40 pb-24 px-6 sm:px-12 lg:px-24 overflow-hidden">
         {/* Abstract Background pattern */}
-        <div className="absolute top-0 right-0 -mr-40 top-20 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl" />
-        <div className="absolute top-40 left-10 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 -mr-40 top-20 w-96 h-96 bg-brand-gold/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute top-40 left-10 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl opacity-50" />
         
         <div className="max-w-4xl relative z-10">
-          <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight mb-6">
+          <h1 className="text-6xl md:text-8xl font-serif font-bold leading-tight mb-8 text-brand-dark">
             Share Your <span className="text-gradient">Thinking.</span><br />
             Elevate Your Faith.
           </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl leading-relaxed">
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl leading-relaxed">
             Welcome to Fikrit. Engage in deep Q&A, study structured courses, and immerse yourself in a community built around authentic Islamic knowledge and thoughtful exchange.
           </p>
           
-          <div className="flex flex-wrap gap-4">
-            <Link href="/ask" className="px-6 py-3 bg-brand-gold text-white rounded-full font-semibold hover:bg-yellow-600 transition-all shadow-xl shadow-brand-gold/20 flex items-center gap-2">
-              <HelpCircle size={18} /> Ask a Question
+          <div className="flex flex-wrap gap-5">
+            <Link href="/ask" className="px-8 py-4 bg-brand-gold text-white rounded-full font-bold hover:bg-yellow-600 transition-all shadow-xl shadow-brand-gold/20 flex items-center gap-2 transform hover:-translate-y-1">
+              <HelpCircle size={20} /> Ask a Question
             </Link>
-            <Link href="/videos" className="px-6 py-3 bg-white text-brand-dark border border-gray-200 rounded-full font-semibold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm">
-              <Video size={18} /> Watch Latest Videos
+            <Link href="/videos" className="px-8 py-4 bg-white text-brand-dark border border-gray-100 rounded-full font-bold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm transform hover:-translate-y-1">
+              <Video size={20} /> Watch Latest Videos
             </Link>
           </div>
         </div>
       </section>
 
       {/* Forum Search Section - Sistani Integrated */}
-      <section className="px-6 md:px-12 lg:px-24 pb-12">
-        <div className="max-w-2xl mx-auto glass-panel p-6 shadow-xl">
-           <div className="flex items-center gap-2 mb-4 text-brand-gold font-bold">
-              <Search size={20} /> Forum Search
-           </div>
-           <form className="flex flex-col md:flex-row gap-2">
-              <input 
-                 type="text" 
-                 placeholder="Search questions or rulings (includes Sistani.org)..." 
-                 className="flex-grow px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-all"
-              />
-              <button className="px-6 py-3 bg-brand-gold text-white rounded-xl font-semibold hover:brightness-110 transition-all">
-                 Search
-              </button>
-           </form>
-           <p className="mt-3 text-xs text-gray-400 text-center">
-             *Results will include existing community discussions and official Sistani.org English rulings.
-           </p>
-        </div>
+      <section className="px-6 md:px-12 lg:px-24 pb-16">
+         <ForumSearch />
       </section>
 
       {/* Daily Reflection Widget & Quick Links */}
