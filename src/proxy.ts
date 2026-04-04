@@ -26,11 +26,16 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Profile Setup Redirect
   const isAuthRoute = pathname.startsWith('/api/auth');
   const isPendingPage = pathname.includes('/pending-approval');
+  const hasJustSetup = request.cookies.get('fikrit_setup_success');
   
   if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+    // High-priority bypass for just-onboarded users to solve stale session loops
+    if (hasJustSetup) {
+       console.log(`[PROXY] Bypassing onboarding check for ${session.user.email} (Just Setup)`);
+       return NextResponse.next();
+    }
 
     const userRole = (session.user as any).role;
     const phone = (session.user as any).phone;
