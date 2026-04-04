@@ -15,19 +15,24 @@ export async function DELETE() {
 
   try {
     const userId = (session.user as any).id;
+    console.log(`[DELETE_API] Deleting user id: ${userId}`);
 
-    // Delete the user (Prisma cascade will handle related data if configured, 
-    // but our schema has some relations that might need manual cleanup if not cascade)
-    // Looking at schema: Account, Session, Question, Answer, Bookmark all have relations to User.
-    // Most are marked onDelete: Cascade. 
-    
-    await prisma.user.delete({
+    if (!userId) {
+      console.error("[DELETE_API] No user id found in session object");
+      return NextResponse.json({ error: 'User ID missing in session' }, { status: 400 });
+    }
+
+    const deletedUser = await prisma.user.delete({
       where: { id: userId },
     });
 
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Delete account error:', error);
-    return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });
+    console.log(`[DELETE_API] Successfully deleted user record for: ${deletedUser.email}`);
+    return NextResponse.json({ success: true, message: 'Account deleted successfully' });
+  } catch (error: any) {
+    console.error('[DELETE_API] Error deleting account:', error);
+    return NextResponse.json({ 
+      error: 'Failed to delete account. Please ensure you have run "npx prisma db push" to enable cascades.',
+      details: error.message 
+    }, { status: 500 });
   }
 }

@@ -18,9 +18,8 @@ export default function AuthButton() {
           await signOut({ callbackUrl: "/" });
         } else {
           const errorData = await res.json().catch(() => ({}));
-          console.error("Delete failed:", errorData);
           console.error("Delete failed:", { status: res.status, errorData });
-          alert(`Failed to delete profile: ${errorData.error || res.statusText || "Unknown error"}`);
+          alert(`Failed to delete profile: ${errorData.error || res.statusText || "Database constraint error. Please run 'db push'."}`);
         }
       } catch (error: any) {
         console.error("Failed to delete profile error:", error);
