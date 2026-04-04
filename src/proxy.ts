@@ -21,7 +21,8 @@ export async function proxy(request: NextRequest) {
   }
 
   // 2. Profile Setup Redirect
-  if (session?.user && !pathname.includes('/setup-profile') && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+  const isAuthRoute = pathname.startsWith('/api/auth');
+  if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
     const userRole = (session.user as any).role;
     
     // If user has no role defined yet, they MUST complete the setup

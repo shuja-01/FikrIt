@@ -10,20 +10,35 @@ export default function AuthButton() {
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete your profile? This action cannot be undone.")) {
       try {
+        console.log("Starting profile delete sequence...");
         const res = await fetch("/api/profile/delete", { method: "DELETE" });
+        
         if (res.ok) {
-          signOut({ callbackUrl: "/" });
+          console.log("Delete successful, signing out...");
+          await signOut({ callbackUrl: "/" });
+        } else {
+          const errorData = await res.json().catch(() => ({}));
+          console.error("Delete failed:", errorData);
+          console.error("Delete failed:", { status: res.status, errorData });
+          alert(`Failed to delete profile: ${errorData.error || res.statusText || "Unknown error"}`);
         }
-      } catch (error) {
-        console.error("Failed to delete profile:", error);
+      } catch (error: any) {
+        console.error("Failed to delete profile error:", error);
+        alert(`Request failed: ${error.message || "An unexpected error occurred"}`);
       }
     }
   };
 
   if (session && session.user) {
-    const handleSignOut = () => {
+    const handleSignOut = async () => {
       if (confirm("Are you sure you want to sign out?")) {
-        signOut({ callbackUrl: "/" });
+        console.log("Invoking signOut...");
+        try {
+          await signOut({ callbackUrl: "/" });
+        } catch (error: any) {
+          console.error("Sign out error:", error);
+          alert(`Sign out failed: ${error.message}`);
+        }
       }
     };
 
