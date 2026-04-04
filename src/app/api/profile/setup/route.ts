@@ -33,7 +33,13 @@ export async function POST(request: Request) {
       data: updateData,
     });
 
-    return NextResponse.json(updatedUser);
+    return new NextResponse(JSON.stringify(updatedUser), {
+      status: 200,
+      headers: {
+        'Set-Cookie': 'fikrit_setup_success=true; Path=/; Max-Age=60; SameSite=Lax',
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
     console.error('Profile setup error:', error);
     return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 });
