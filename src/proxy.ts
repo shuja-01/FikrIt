@@ -24,9 +24,12 @@ export async function proxy(request: NextRequest) {
   const isAuthRoute = pathname.startsWith('/api/auth');
   if (session?.user && !pathname.includes('/setup-profile') && !isAuthRoute && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
     const userRole = (session.user as any).role;
+    const phone = (session.user as any).phone;
     
-    // If user has no role defined yet, they MUST complete the setup
-    if (!userRole) {
+    // A user is NOT onboarded if they have no role. User must explicitly pick a role during setup.
+    // This allows us to force setup even if the database assigned a placeholder role.
+    if (!userRole || !phone) {
+       console.log(`[PROXY] Redirecting user ${session.user.email} to setup-profile`);
        return NextResponse.redirect(new URL('/setup-profile', request.url));
     }
   }

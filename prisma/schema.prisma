@@ -43,7 +43,7 @@ model User {
   sessions      Session[]
   
   // Custom Fikrit User Fields
-  role          Role      @default(USER)
+  role          Role?     // User must explicitly pick a role during setup
   isApproved    Boolean   @default(true) // Normal users auto-approved, Guides set to false when they request the role
   phone         String?
   gender        String?   // "male" | "female"
