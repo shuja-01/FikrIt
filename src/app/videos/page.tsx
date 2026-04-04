@@ -54,24 +54,6 @@ export default function VideoPortal() {
 
         {/* Global Toolbar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-16 px-6">
-          <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none w-full md:w-auto">
-             <button 
-               onClick={() => setSelectedChannel("all")}
-               className={`whitespace-nowrap px-8 py-3.5 rounded-2xl font-bold transition-all border-2 ${selectedChannel === 'all' ? 'bg-brand-gold border-brand-gold shadow-lg shadow-brand-gold/20' : 'bg-white/5 border-white/10 text-gray-400 hover:border-brand-gold/40'}`}
-             >
-               All Spiritual Channels
-             </button>
-             {VIDEO_CHANNELS.map(c => (
-               <button 
-                 key={c.id}
-                 onClick={() => setSelectedChannel(c.id)}
-                 className={`whitespace-nowrap px-8 py-3.5 rounded-2xl font-bold transition-all border-2 ${selectedChannel === c.id ? 'bg-brand-gold border-brand-gold shadow-lg shadow-brand-gold/20' : 'bg-white/5 border-white/10 text-gray-400 hover:border-brand-gold/40'}`}
-               >
-                 {c.name}
-               </button>
-             ))}
-          </div>
-
           <div className="relative group w-full md:w-96">
              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-brand-gold transition-colors" size={20} />
              <input 
