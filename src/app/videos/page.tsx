@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Play, TrendingUp, Clock, Filter, Tv as VideoTv, Search, MonitorPlay } from "lucide-react";
+import { Play, TrendingUp, Clock, Filter, Tv as VideoTv, Search, MonitorPlay, X } from "lucide-react";
 import { VIDEOS, VIDEO_CHANNELS, type Video } from "@/core/video-data";
 
 export default function VideoPortal() {
   const [selectedChannel, setSelectedChannel] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
   const filteredVideos = useMemo(() => {
     return VIDEOS.filter(v => {
@@ -24,12 +25,12 @@ export default function VideoPortal() {
     <main className="min-h-screen bg-brand-dark pt-10 pb-20 text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         
-        {/* Featured Latest Header (Only for @BarabankiAzadari as requested) */}
+        {/* Featured Latest Header */}
         {latestBarabanki && (
           <div className="relative h-[500px] mb-20 rounded-[40px] overflow-hidden group shadow-2xl animate-in zoom-in-95 duration-1000">
              <div 
                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" 
-               style={{ backgroundImage: `url(${latestBarabanki.thumbnail})` }}
+               style={{ backgroundImage: `url(${latestBarabanki.thumbnail}), url('/ytThumnail.png')` }}
              />
              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/40 to-transparent" />
              
@@ -40,13 +41,12 @@ export default function VideoPortal() {
                </div>
                <h2 className="text-6xl font-serif font-black mb-8 leading-tight">{latestBarabanki.title}</h2>
                <div className="flex items-center gap-6">
-                 <button className="bg-brand-gold text-white px-10 py-5 rounded-full font-black flex items-center gap-4 hover:bg-white hover:text-brand-dark transition-all shadow-2xl hover:shadow-brand-gold/40 scale-100 hover:scale-110 active:scale-95 duration-300">
+                 <button 
+                   onClick={() => setActiveVideoId(latestBarabanki.id)}
+                   className="bg-brand-gold text-white px-10 py-5 rounded-full font-black flex items-center gap-4 hover:bg-white hover:text-brand-dark transition-all shadow-2xl hover:shadow-brand-gold/40 scale-100 hover:scale-110 active:scale-95 duration-300"
+                 >
                     <Play fill="currentColor" size={24} /> WATCH NOW
                  </button>
-                 <div className="text-gray-400 font-medium flex items-center gap-8">
-                   <span className="flex items-center gap-2 font-black text-white"><Clock size={16} className="text-brand-gold" /> {latestBarabanki.duration}</span>
-                   <span className="flex items-center gap-2 font-black text-white"><Search size={16} className="text-brand-gold" /> {latestBarabanki.views} VIEWS</span>
-                 </div>
                </div>
              </div>
           </div>
@@ -89,10 +89,13 @@ export default function VideoPortal() {
           {filteredVideos.map((video, idx) => (
             <div 
               key={video.id + idx} 
-              className="bg-white/5 border border-white/5 rounded-[32px] overflow-hidden hover:bg-white/10 transition-all group hover:translate-y-[-12px] duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
+              onClick={() => setActiveVideoId(video.id)}
+              className="cursor-pointer bg-white/5 border border-white/5 rounded-[32px] overflow-hidden hover:bg-white/10 transition-all group hover:translate-y-[-12px] duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
             >
               <div className="relative aspect-video overflow-hidden">
-                 <img src={video.thumbnail} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                 <img src={video.thumbnail} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" onError={(e) => {
+                   (e.target as any).src = '/ytThumnail.png';
+                 }} />
                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div className="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-2xl">
                        <Play fill="white" size={32} />
@@ -113,12 +116,33 @@ export default function VideoPortal() {
                     <span className="flex items-center gap-2 text-gray-300">
                       <MonitorPlay size={14} className="text-red-500" /> {video.channelName}
                     </span>
-                    <span className="flex items-center gap-1.5"><TrendingUp size={12} fill="currentColor" /> {video.views}</span>
                  </div>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Video Player Modal */}
+        {activeVideoId && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-md animate-in fade-in duration-300">
+             <button 
+               onClick={() => setActiveVideoId(null)}
+               className="absolute top-10 right-10 p-4 bg-white/10 rounded-full hover:bg-brand-gold text-white transition-all shadow-2xl"
+             >
+                <X size={32} />
+             </button>
+             <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/10 animate-in zoom-in-95 duration-500">
+                <iframe 
+                  className="w-full h-full"
+                  src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=1`}
+                  title="Spiritual Enlightenment Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+             </div>
+          </div>
+        )}
 
         {filteredVideos.length === 0 && (
            <div className="py-40 text-center text-gray-600 font-medium animate-pulse">

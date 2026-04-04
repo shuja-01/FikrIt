@@ -10,55 +10,67 @@ export async function GET(request: Request) {
   }
 
   try {
-    // DuckDuckGo LITE is much more stable and less likely to 403 on Vercel
-    const liteUrl = `https://lite.duckduckgo.com/lite/?q=site:sistani.org/english/qa/+${encodeURIComponent(query)}`;
+    // Switching to the /html/ endpoint of DuckDuckGo which is often more lenient than /lite/ on Vercel
+    const searchUrl = `https://duckduckgo.com/html/?q=site:sistani.org/english/qa/+${encodeURIComponent(query)}`;
     
-    const response = await fetch(liteUrl, {
+    const response = await fetch(searchUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
       }
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch from Search Engine: ${response.status}`);
+        // Fallback for 403: If DDG blocks us, we attempt a direct search on sistani.org
+        const sistaniSearchUrl = `https://www.sistani.org/english/qa/search/?search=${encodeURIComponent(query)}`;
+        const sistaniRes = await fetch(sistaniSearchUrl, { headers: { 'User-Agent': 'Mozilla/5.0' }});
+        
+        if (sistaniRes.ok) {
+           const html = await sistaniRes.text();
+           const $ = cheerio.load(html);
+           const results: any[] = [];
+           
+           $('.item_list_qa').each((i, el) => {
+              const link = $(el).find('a');
+              results.push({
+                title: link.text().trim(),
+                url: `https://www.sistani.org${link.attr('href')}`,
+                snippet: "Direct ruling from Sistani.org",
+                source: 'sistani.org'
+              });
+           });
+           
+           return NextResponse.json({ results: results.slice(0, 5) });
+        }
+        
+        throw new Error(`Primary and Fallback search failed. Status: ${response.status}`);
     }
 
     const html = await response.text();
     const $ = cheerio.load(html);
     const results: any[] = [];
 
-    // DuckDuckGo Lite selectors
-    $('tr').each((i, element) => {
-       const link = $(element).find('a.result-link');
+    // Parse DDG HTML results
+    $('.result__body').each((i, element) => {
+       const link = $(element).find('.result__a');
        const title = link.text().trim();
        const rawUrl = link.attr('href');
-       const snippet = $(element).next().find('.result-snippet').text().trim();
+       const snippet = $(element).find('.result__snippet').text().trim();
 
-       if (title && rawUrl && rawUrl.includes('sistani.org')) {
+       if (title && rawUrl && rawUrl.toLowerCase().includes('sistani.org')) {
          results.push({
            title: title.replace(' - Sistani.org', '').replace(' | Sistani.org', ''),
            url: rawUrl,
-           snippet: snippet || "Click to view ruling details on Sistani.org",
+           snippet: snippet || "View official ruling on Sistani.org",
            source: 'sistani.org'
          });
        }
     });
 
-    // If results are still empty, try parsing alternate DDG Lite structure
-    if (results.length === 0) {
-      $('.result-link').each((i, el) => {
-        const title = $(el).text();
-        const url = $(el).attr('href');
-        if (title && url && url.includes('sistani.org')) {
-           results.push({ title, url, snippet: "Ruling from Sistani.org", source: "sistani.org" });
-        }
-      });
-    }
-
-    console.log(`Search for "${query}" returned ${results.length} results.`);
-    return NextResponse.json({ results });
+    return NextResponse.json({ results: results.slice(0, 10) });
   } catch (error) {
     console.error('Sistani search error:', error);
     return NextResponse.json({ error: 'Failed to search Sistani.org' }, { status: 500 });
