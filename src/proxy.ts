@@ -36,7 +36,8 @@ export async function proxy(request: NextRequest) {
     const isApproved = (session.user as any).isApproved;
     
     // A user is NOT onboarded if they have no role. User must explicitly pick a role during setup.
-    if (!userRole || !phone) {
+    // However, we MUST allow them to reach the pending-approval page even if the session is stale.
+    if ((!userRole || !phone) && !isPendingPage) {
        console.log(`[PROXY] Redirecting user ${session.user.email} to setup-profile`);
        return NextResponse.redirect(new URL('/setup-profile', request.url));
     }
