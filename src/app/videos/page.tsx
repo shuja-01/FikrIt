@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Play, TrendingUp, Clock, Filter, Youtube, Search, Tv } from "lucide-react";
-import { VIDEOS, VIDEO_CHANNELS, Video } from "@/core/video-data";
+import { Play, TrendingUp, Clock, Filter, Tv as VideoTv, Search, MonitorPlay } from "lucide-react";
+import { VIDEOS, VIDEO_CHANNELS, type Video } from "@/core/video-data";
 
 export default function VideoPortal() {
   const [selectedChannel, setSelectedChannel] = useState<string>("all");
@@ -36,7 +36,7 @@ export default function VideoPortal() {
              <div className="absolute bottom-16 left-16 max-w-2xl">
                <div className="flex items-center gap-3 mb-6">
                  <span className="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-[3px] shadow-lg animate-pulse">LATEST UPLOAD</span>
-                 <span className="text-gray-300 font-medium flex items-center gap-2"><Tv size={16} /> {latestBarabanki.channelName}</span>
+                 <span className="text-gray-300 font-medium flex items-center gap-2"><VideoTv size={16} /> {latestBarabanki.channelName}</span>
                </div>
                <h2 className="text-6xl font-serif font-black mb-8 leading-tight">{latestBarabanki.title}</h2>
                <div className="flex items-center gap-6">
@@ -111,7 +111,7 @@ export default function VideoPortal() {
                  <h3 className="text-xl font-bold mb-4 line-clamp-2 leading-relaxed h-[3.5rem]">{video.title}</h3>
                  <div className="flex items-center justify-between text-gray-500 font-bold text-xs uppercase tracking-widest pt-6 border-t border-white/5">
                     <span className="flex items-center gap-2 text-gray-300">
-                      <Youtube size={14} className="text-red-500" /> {video.channelName}
+                      <MonitorPlay size={14} className="text-red-500" /> {video.channelName}
                     </span>
                     <span className="flex items-center gap-1.5"><TrendingUp size={12} fill="currentColor" /> {video.views}</span>
                  </div>
