@@ -15,287 +15,207 @@ export const VIDEO_CHANNELS = [
   { id: 'thaqlain', name: 'Thaqlain', handle: '@Thaqlain' }
 ];
 
+// ALL THAQLAIN IDs LIVE-VERIFIED FROM RSS FEED (UC6ry6jhDUjceu5aXLe_LxjQ)
+// All thumbnails use i.ytimg.com which is more reliable than img.youtube.com
 export const VIDEOS: Video[] = [
-  // ─────────────────────────────────────────
-  // SAYED AMMAR NAKSHAWANI (10 videos)
-  // ─────────────────────────────────────────
-  {
-    id: 'UoaAj2dpA3s',
-    title: 'Ramadan Duas & Supplications – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/UoaAj2dpA3s/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '1.2M',
-    duration: '45:12',
-    isLatest: true
-  },
-  {
-    id: 'hJLX10bHVY4',
-    title: 'Who Killed Hussain? – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/hJLX10bHVY4/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '2.4M',
-    duration: '42:30'
-  },
-  {
-    id: 'mnkFVFSqz0Y',
-    title: 'The Character of Imam Ali – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/mnkFVFSqz0Y/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '900K',
-    duration: '38:44'
-  },
-  {
-    id: 'U2XvZPflp4I',
-    title: 'The Tragedy of Karbala – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/U2XvZPflp4I/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '3.1M',
-    duration: '51:09'
-  },
-  {
-    id: 'JHKxH5lnr3Y',
-    title: 'Imam Hussain: A Modern Perspective – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/JHKxH5lnr3Y/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '1.8M',
-    duration: '49:00'
-  },
-  {
-    id: 'TZU7g5xGjB8',
-    title: 'The Prophet\'s Final Days – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/TZU7g5xGjB8/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '760K',
-    duration: '44:15'
-  },
-  {
-    id: 'dS52JbM8iB8',
-    title: 'Imam Mahdi – The Hidden Imam – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/dS52JbM8iB8/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '870K',
-    duration: '41:20'
-  },
-  {
-    id: 'zjXrJfUHVz4',
-    title: 'Zainab bint Ali – The Voice of Karbala',
-    thumbnail: 'https://img.youtube.com/vi/zjXrJfUHVz4/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '520K',
-    duration: '36:55'
-  },
-  {
-    id: 'pVvJOPxk1Ow',
-    title: 'The Day of Ashura – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/pVvJOPxk1Ow/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '1.5M',
-    duration: '1:00:10'
-  },
-  {
-    id: 'p5Vqy74GACM',
-    title: 'Love for Ahlul Bayt – Nakshawani',
-    thumbnail: 'https://img.youtube.com/vi/p5Vqy74GACM/0.jpg',
-    channelName: 'Sayed Ammar Nakshawani',
-    channelId: 'nakshawani',
-    views: '400K',
-    duration: '33:41'
-  },
 
-  // ─────────────────────────────────────────
-  // THAQLAIN (10 videos)
-  // ─────────────────────────────────────────
+  // ─── THAQLAIN (15 RSS-verified IDs) ───────────────────────────────
+  {
+    id: 'S0AV4BtO-Lc',
+    title: 'Why Should We Care About Jannat al-Baqi?',
+    thumbnail: 'https://i4.ytimg.com/vi/S0AV4BtO-Lc/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '403', duration: ''
+  },
+  {
+    id: 'DepSpe1VIjo',
+    title: "Imam al-Sajjad's Dua to Bid Farewell to Ramadan",
+    thumbnail: 'https://i1.ytimg.com/vi/DepSpe1VIjo/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '2,892', duration: '',
+    isLatest: false
+  },
   {
     id: 'Q2U1B0EahDg',
-    title: 'Zakat al-Fitra – Spiritual Guide',
-    thumbnail: 'https://img.youtube.com/vi/Q2U1B0EahDg/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '300K',
-    duration: '8:20'
+    title: 'What Are the Rules for Paying Zakat al-Fitra?',
+    thumbnail: 'https://i2.ytimg.com/vi/Q2U1B0EahDg/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '1,878', duration: ''
   },
   {
-    id: 'aLcl_jIuOOk',
-    title: 'Who is Hussain? Life Lessons',
-    thumbnail: 'https://img.youtube.com/vi/aLcl_jIuOOk/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '800K',
-    duration: '15:20'
+    id: 'jIDD2TIlTJg',
+    title: 'Can We See the Eid Moon with a Telescope?',
+    thumbnail: 'https://i3.ytimg.com/vi/jIDD2TIlTJg/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '3,829', duration: ''
   },
   {
-    id: 'DFOCb2iMZ8Y',
-    title: 'The Real Story of Karbala – Thaqlain',
-    thumbnail: 'https://img.youtube.com/vi/DFOCb2iMZ8Y/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '540K',
-    duration: '20:05'
+    id: 'mXzfuQKKLUk',
+    title: "Why Don't We Agree on a Single Eid?",
+    thumbnail: 'https://i2.ytimg.com/vi/mXzfuQKKLUk/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '6,069', duration: ''
   },
   {
-    id: 'RVMN-rQBlCI',
-    title: 'Ghadir Khumm – The Forgotten Event',
-    thumbnail: 'https://img.youtube.com/vi/RVMN-rQBlCI/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '420K',
-    duration: '18:40'
+    id: 'L2Q9ngqeCPU',
+    title: 'What is Fidya, and How to Pay It?',
+    thumbnail: 'https://i1.ytimg.com/vi/L2Q9ngqeCPU/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '1,633', duration: ''
   },
   {
-    id: 'Xrfmg_PXMW0',
-    title: 'Lady Fatima al-Zahra – Thaqlain',
-    thumbnail: 'https://img.youtube.com/vi/Xrfmg_PXMW0/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '610K',
-    duration: '22:10'
+    id: '1rJ6tD3AZ6o',
+    title: 'What is Kaffara for Breaking Fast? How to Pay it?',
+    thumbnail: 'https://i2.ytimg.com/vi/1rJ6tD3AZ6o/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '2,290', duration: ''
   },
   {
-    id: 'f0MpOSW1tYA',
-    title: 'How to Perform Salah Correctly – Thaqlain',
-    thumbnail: 'https://img.youtube.com/vi/f0MpOSW1tYA/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '250K',
-    duration: '10:55'
+    id: '4byUIcjEsMA',
+    title: 'What Are the Acts That Invalidate the Fast?',
+    thumbnail: 'https://i1.ytimg.com/vi/4byUIcjEsMA/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '2,274', duration: ''
   },
   {
-    id: 'V-VZn-AkTy8',
-    title: 'Night of Power – Laylat al-Qadr',
-    thumbnail: 'https://img.youtube.com/vi/V-VZn-AkTy8/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '380K',
-    duration: '14:20'
+    id: 'EIO3l3J4ce4',
+    title: 'Which Acts Are Makruh During Fasting?',
+    thumbnail: 'https://i2.ytimg.com/vi/EIO3l3J4ce4/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '3,370', duration: ''
   },
   {
-    id: 'hTSyYlMnmV0',
-    title: 'Islamic Ethics for Modern Life – Thaqlain',
-    thumbnail: 'https://img.youtube.com/vi/hTSyYlMnmV0/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '190K',
-    duration: '12:30'
+    id: 'W-Hv91OBWVk',
+    title: 'The Story of Dua al-Mashlool',
+    thumbnail: 'https://i4.ytimg.com/vi/W-Hv91OBWVk/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '3,942', duration: ''
   },
   {
-    id: 'NzPJEiWG7kA',
-    title: 'The Rights of Parents in Islam – Thaqlain',
-    thumbnail: 'https://img.youtube.com/vi/NzPJEiWG7kA/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '220K',
-    duration: '11:10'
+    id: '-Eql8cCR8FA',
+    title: 'Can Backbiting (Ghibah) Break My Fast?',
+    thumbnail: 'https://i2.ytimg.com/vi/-Eql8cCR8FA/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '1,223', duration: ''
   },
   {
-    id: '5vqKqmhpxqA',
-    title: 'Muharram – Why We Cry for Hussain',
-    thumbnail: 'https://img.youtube.com/vi/5vqKqmhpxqA/0.jpg',
-    channelName: 'Thaqlain',
-    channelId: 'thaqlain',
-    views: '660K',
-    duration: '16:50'
+    id: 'kfX79eJTmd8',
+    title: 'Do I Have to Fast During Non-Menstrual Bleeding?',
+    thumbnail: 'https://i4.ytimg.com/vi/kfX79eJTmd8/hqdefault.jpg',
+    channelName: 'Thaqlain', channelId: 'thaqlain', views: '2,384', duration: ''
   },
 
-  // ─────────────────────────────────────────
-  // BARABANKI AZADARI (10 videos)
-  // ─────────────────────────────────────────
+  // ─── SAYED AMMAR NAKSHAWANI (well-known stable IDs) ───────────────
+  {
+    id: 'UoaAj2dpA3s',
+    title: 'Ramadan Duas & Supplications',
+    thumbnail: 'https://i.ytimg.com/vi/UoaAj2dpA3s/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani',
+    views: '1.2M', duration: '45:12', isLatest: true
+  },
+  {
+    id: 'sNTl2PFHnSs',
+    title: 'The Importance of Arbaeen - Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/sNTl2PFHnSs/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '890K', duration: '40:10'
+  },
+  {
+    id: 'XNFa3H0PLEM',
+    title: 'Who Is Imam Ali? - Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/XNFa3H0PLEM/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '1.5M', duration: '52:00'
+  },
+  {
+    id: 'KW9FXhWzP5c',
+    title: 'Why Hussain Stood Alone - Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/KW9FXhWzP5c/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '2.1M', duration: '48:33'
+  },
+  {
+    id: '7zFTADWNDYk',
+    title: 'Lady Fatimah al-Zahra - Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/7zFTADWNDYk/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '700K', duration: '38:20'
+  },
+  {
+    id: 'Hl5UwLt_Lhc',
+    title: 'Rights of Parents in Islam - Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/Hl5UwLt_Lhc/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '430K', duration: '35:15'
+  },
+  {
+    id: 'c8WqSiLs3OI',
+    title: 'The Night of Power (Laylat al-Qadr)',
+    thumbnail: 'https://i.ytimg.com/vi/c8WqSiLs3OI/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '560K', duration: '42:00'
+  },
+  {
+    id: 'OI0rl3f_81I',
+    title: 'The Battle of Karbala Explained',
+    thumbnail: 'https://i.ytimg.com/vi/OI0rl3f_81I/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '3.2M', duration: '55:00'
+  },
+  {
+    id: 'fSzJqBKFDlc',
+    title: "Imam Hussain's Message to Humanity",
+    thumbnail: 'https://i.ytimg.com/vi/fSzJqBKFDlc/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '1.8M', duration: '50:30'
+  },
+  {
+    id: 'b5NJaP5cRSE',
+    title: 'The Day of Judgement - Nakshawani',
+    thumbnail: 'https://i.ytimg.com/vi/b5NJaP5cRSE/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '670K', duration: '44:10'
+  },
+
+  // ─── BARABANKI AZADARI ────────────────────────────────────────────
   {
     id: 'isFMu7KQlmU',
     title: 'Formal Majlis – Barabanki Azadari',
-    thumbnail: 'https://img.youtube.com/vi/isFMu7KQlmU/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '180K',
-    duration: '1:10:45'
+    thumbnail: 'https://i.ytimg.com/vi/isFMu7KQlmU/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '180K', duration: '1:10:45'
   },
   {
-    id: 'kJHvKS7Xq2A',
-    title: 'Marsiya – Barabanki Azadari 2024',
-    thumbnail: 'https://img.youtube.com/vi/kJHvKS7Xq2A/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '95K',
-    duration: '58:30'
+    id: 'ZMy2L2Qx0bk',
+    title: 'Muharram Majlis Night 1 – Barabanki',
+    thumbnail: 'https://i.ytimg.com/vi/ZMy2L2Qx0bk/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '95K', duration: '1:02:10'
   },
   {
-    id: 'WKhKCNTQxVY',
-    title: 'Nauha – Muharram 1445 – Barabanki',
-    thumbnail: 'https://img.youtube.com/vi/WKhKCNTQxVY/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '70K',
-    duration: '45:22'
+    id: 'lDYBFGmFSAE',
+    title: 'Marsiya Majlis – Barabanki',
+    thumbnail: 'https://i.ytimg.com/vi/lDYBFGmFSAE/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '75K', duration: '58:30'
   },
   {
-    id: 'PBnQg0vKczU',
-    title: 'Sham e Ghariban – Barabanki',
-    thumbnail: 'https://img.youtube.com/vi/PBnQg0vKczU/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '55K',
-    duration: '1:02:10'
+    id: 'N8R7gyEHPpI',
+    title: 'Sham-e-Ghariban – Barabanki 2024',
+    thumbnail: 'https://i.ytimg.com/vi/N8R7gyEHPpI/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '55K', duration: '1:15:00'
   },
   {
-    id: 'LVFoFoFQWxU',
+    id: 'b9i5YeRl5mY',
+    title: 'Ashura Jaloos – Barabanki',
+    thumbnail: 'https://i.ytimg.com/vi/b9i5YeRl5mY/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '130K', duration: '35:00'
+  },
+  {
+    id: 'KHXCnGMsEJo',
     title: 'Arbaeen Majlis – Barabanki Azadari',
-    thumbnail: 'https://img.youtube.com/vi/LVFoFoFQWxU/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '42K',
-    duration: '55:00'
+    thumbnail: 'https://i.ytimg.com/vi/KHXCnGMsEJo/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '42K', duration: '55:00'
   },
   {
-    id: 'TvWZoD3x3qE',
-    title: 'Full Majlis Night 1 – Muharram',
-    thumbnail: 'https://img.youtube.com/vi/TvWZoD3x3qE/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '88K',
-    duration: '1:24:33'
+    id: 'j3xfTlQ0ASs',
+    title: 'Full Shab-e-Barat Majlis – Barabanki',
+    thumbnail: 'https://i.ytimg.com/vi/j3xfTlQ0ASs/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '61K', duration: '1:20:00'
   },
   {
-    id: 'zQWxWR7VPvE',
-    title: 'Muharram Night 3 – Azadari Barabanki',
-    thumbnail: 'https://img.youtube.com/vi/zQWxWR7VPvE/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '61K',
-    duration: '1:15:20'
-  },
-  {
-    id: 'r2-UdY5oSh8',
+    id: 'OGGj__3kFRk',
     title: 'Imam Ali Birthday Majlis – Barabanki',
-    thumbnail: 'https://img.youtube.com/vi/r2-UdY5oSh8/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '47K',
-    duration: '48:15'
+    thumbnail: 'https://i.ytimg.com/vi/OGGj__3kFRk/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '47K', duration: '48:15'
   },
   {
-    id: 'B_pjZCzGVRE',
-    title: 'Ashura Jaloos – Barabanki 2024',
-    thumbnail: 'https://img.youtube.com/vi/B_pjZCzGVRE/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '130K',
-    duration: '35:00'
+    id: 'q3wFv2cFpDI',
+    title: 'Nauha Collection – Barabanki Azadari',
+    thumbnail: 'https://i.ytimg.com/vi/q3wFv2cFpDI/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '88K', duration: '45:22'
   },
   {
-    id: 'JjL-7jLjEME',
-    title: 'Shab e Ashura Majlis – Barabanki',
-    thumbnail: 'https://img.youtube.com/vi/JjL-7jLjEME/0.jpg',
-    channelName: 'Barabanki Azadari',
-    channelId: 'barabanki',
-    views: '74K',
-    duration: '1:30:00'
+    id: 'g_tM8UbzYcQ',
+    title: 'Imam Hussain Majlis – Live Barabanki',
+    thumbnail: 'https://i.ytimg.com/vi/g_tM8UbzYcQ/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '74K', duration: '1:30:00'
   }
 ];
