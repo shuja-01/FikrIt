@@ -1,0 +1,147 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// NextAuth Required Models
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Custom Fikrit User Fields
+  role          Role      @default(USER)
+  points        Int       @default(0)
+  badges        String[]  @default([])
+  questions     Question[]
+  answers       Answer[]
+  bookmarks     Bookmark[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
+
+enum Role {
+  USER
+  SCHOLAR
+  ADMIN
+}
+
+// Fikrit Core Feature Models
+
+model Question {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  upvotes   Int      @default(0)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  answers   Answer[]
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  content    String   @db.Text
+  upvotes    Int      @default(0)
+  isAccepted Boolean  @default(false)
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String   @db.Text
+  category    ArticleCategory
+  imageUrl    String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ArticleCategory {
+  QURANIC_STUDIES
+  HADITH_SUNNAH
+  FIQH
+  HISTORY_AHLULBAYT
+  CONTEMPORARY_ISSUES
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  youtubeId   String
+  category    String
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+}
+
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  authorName  String
+  topic       String
+  language    String
+  isPaid      Boolean  @default(false)
+  downloadUrl String?
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+}
+
+model Bookmark {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entityType String   // "ARTICLE", "BOOK", "VIDEO", "QUESTION"
+  entityId   String
+  createdAt  DateTime @default(now())
+}
