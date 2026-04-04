@@ -34,15 +34,16 @@ export default function SetupProfile() {
 
       // Redirect immediately based on selection, the proxy/middleware will handle 
       // the session state on the next page load.
+      // Use window.location.href for the home page to force a 
+      // full reload, ensuring the stale session is cleared.
       if (role === "DEENI_GUIDE") {
         router.push("/pending-approval");
       } else {
-        router.push("/");
+        window.location.href = "/";
       }
       
       // Update session in the background
       update();
-      router.refresh();
     } catch (err: any) {
       setError(err.message);
     } finally {
