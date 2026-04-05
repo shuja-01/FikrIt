@@ -40,9 +40,21 @@ export default function AuthButton() {
 
     return (
       <div className="flex items-center gap-4">
-        <Link href="/profile" className="text-sm font-medium hover:text-brand-gold transition-colors">
-          Welcome, {session.user.name?.split(" ")[0]}
-        </Link>
+        <div className="flex flex-col items-end">
+          <Link href="/profile" className="text-sm font-bold text-brand-dark hover:text-brand-gold transition-colors">
+            {session.user.name?.split(" ")[0]}
+          </Link>
+          {(session.user as any).role === "DEENI_GUIDE" && (
+            <Link href="/guide/dashboard" className="text-[10px] font-black text-brand-gold uppercase tracking-wider hover:underline">
+              Guide Dashboard &rarr;
+            </Link>
+          )}
+          {(session.user as any).role === "ADMIN" && (
+            <Link href="/fikradmin" className="text-[10px] font-black text-brand-gold uppercase tracking-wider hover:underline">
+              Admin Panel &rarr;
+            </Link>
+          )}
+        </div>
         <button 
           onClick={handleDelete}
           className="text-red-500 hover:text-red-700 transition-colors"

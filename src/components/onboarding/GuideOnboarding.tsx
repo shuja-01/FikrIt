@@ -1,11 +1,19 @@
 "use client";
 
-import { ShieldCheck, Phone, Heart, BookOpen, Loader2, ArrowRight } from "lucide-react";
+import { ShieldCheck, Phone, Heart, BookOpen, Loader2, ArrowRight, AtSign, UserCircle, Award } from "lucide-react";
 import { useState } from "react";
 
 interface Props {
   isLoading: boolean;
-  onComplete: (data: { role: "DEENI_GUIDE"; phone: string; gender: string; marjae: string }) => void;
+  onComplete: (data: { 
+    role: "DEENI_GUIDE"; 
+    phone: string; 
+    gender: string; 
+    marjae: string;
+    username: string;
+    bio?: string;
+    scholarTitle?: string;
+  }) => void;
   error?: string;
 }
 
@@ -13,11 +21,14 @@ export function GuideOnboarding({ isLoading, onComplete, error }: Props) {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [marjae, setMarjae] = useState("");
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [scholarTitle, setScholarTitle] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone || !gender || !marjae) return;
-    onComplete({ role: "DEENI_GUIDE", phone, gender, marjae });
+    if (!phone || !gender || !marjae || !username) return;
+    onComplete({ role: "DEENI_GUIDE", phone, gender, marjae, username, bio, scholarTitle });
   };
 
   return (
@@ -34,6 +45,35 @@ export function GuideOnboarding({ isLoading, onComplete, error }: Props) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-3">
+            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Unique Username</label>
+            <div className="relative group">
+              <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-brand-gold transition-colors" size={20} />
+              <input 
+                type="text" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
+                placeholder="sheikh_ali"
+                className="w-full pl-12 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-brand-gold/20 outline-none transition-all shadow-inner"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Scholar Title</label>
+            <div className="relative group">
+              <Award className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-brand-gold transition-colors" size={20} />
+              <input 
+                type="text" 
+                value={scholarTitle}
+                onChange={(e) => setScholarTitle(e.target.value)}
+                placeholder="e.g. Sheikh, Mufti, Alim"
+                className="w-full pl-12 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-brand-gold/20 outline-none transition-all shadow-inner"
+              />
+            </div>
+          </div>
+
           <div className="space-y-3">
             <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Phone Number</label>
             <div className="relative group">
@@ -67,16 +107,14 @@ export function GuideOnboarding({ isLoading, onComplete, error }: Props) {
           </div>
 
           <div className="md:col-span-2 space-y-3">
-            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Marja-e-Taqleed</label>
+            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Professional Bio</label>
             <div className="relative group">
-              <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-brand-gold transition-colors" size={20} />
-              <input 
-                type="text" 
-                value={marjae}
-                onChange={(e) => setMarjae(e.target.value)}
-                placeholder="e.g. Ayatollah Sistani"
-                className="w-full pl-12 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-brand-gold/20 outline-none transition-all shadow-inner"
-                required
+              <UserCircle className="absolute left-4 top-6 text-gray-300 group-focus-within:text-brand-gold transition-colors" size={20} />
+              <textarea 
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                placeholder="Tell the community about your expertise and background..."
+                className="w-full pl-12 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-brand-gold/20 outline-none transition-all shadow-inner min-h-[120px]"
               />
             </div>
           </div>

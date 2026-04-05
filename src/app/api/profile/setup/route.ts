@@ -9,23 +9,41 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { role, phone, gender, marjae } = await request.json();
+  const { role, phone, gender, marjae, username, bio, scholarTitle } = await request.json();
+
+  // Basic username validation
+  if (username && !/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+    return NextResponse.json({ error: 'Username must be 3-20 characters and only contain letters, numbers, and underscores.' }, { status: 400 });
+  }
 
   if (!role || !['USER', 'DEENI_GUIDE'].includes(role)) {
     return NextResponse.json({ error: 'Valid role is required' }, { status: 400 });
   }
 
   try {
-    const updateData: any = { role };
+    const updateData: any = { role, username };
 
     if (role === 'DEENI_GUIDE') {
-      if (!phone || !gender || !marjae) {
-        return NextResponse.json({ error: 'Deeni Guides must provide phone, gender, and marjae' }, { status: 400 });
+      if (!phone || !gender || !marjae || !username) {
+        return NextResponse.json({ error: 'Deeni Guides must provide username, phone, gender, and marjae' }, { status: 400 });
       }
       updateData.phone = phone;
       updateData.gender = gender;
       updateData.marjae = marjae;
+      updateData.bio = bio;
+      updateData.scholarTitle = scholarTitle;
       updateData.isApproved = false; // Requires admin approval
+    } else {
+      // Standard users also need a username for the forum
+      if (!username) {
+        return NextResponse.json({ error: 'Username is required for forum participation' }, { status: 400 });
+      }
+    }
+
+    // Check username uniqueness if provided
+    const existing = await prisma.user.findUnique({ where: { username } });
+    if (existing && existing.id !== (session.user as any).id) {
+       return NextResponse.json({ error: 'This username is already taken. Please choose another.' }, { status: 400 });
     }
 
     const updatedUser = await prisma.user.update({

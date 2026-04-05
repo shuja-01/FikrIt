@@ -1,7 +1,8 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { User, Mail, ShieldCheck, Phone, Heart, BookOpen, Trash2, Loader2, ChevronLeft } from "lucide-react";
+import { User, Mail, ShieldCheck, Phone, Heart, BookOpen, Trash2, Loader2, ChevronLeft, MessageCircle, Clock, CheckCircle2, AtSign } from "lucide-react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -9,6 +10,23 @@ import { signOut } from "next-auth/react";
 export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [loadingQuestions, setLoadingQuestions] = useState(true);
+
+  useEffect(() => {
+    if (session) {
+      fetch("/api/profile/questions")
+        .then(res => res.json())
+        .then(data => {
+           if (Array.isArray(data)) setQuestions(data);
+           setLoadingQuestions(false);
+        })
+        .catch(err => {
+           console.error(err);
+           setLoadingQuestions(false);
+        });
+    }
+  }, [session]);
 
   if (status === "loading") {
     return (
@@ -60,10 +78,17 @@ export default function ProfilePage() {
                )}
             </div>
             <div className="text-center md:text-left">
-              <h1 className="text-4xl font-serif font-bold text-brand-dark mb-1">{session.user?.name}</h1>
-              <p className="text-brand-gold font-bold flex items-center justify-center md:justify-start gap-2">
-                <ShieldCheck size={16} /> {(session.user as any)?.role || "User"}
-              </p>
+               <h1 className="text-4xl font-serif font-bold text-brand-dark mb-1">{session.user?.name}</h1>
+               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                 <p className="text-brand-gold font-bold flex items-center gap-2">
+                   <ShieldCheck size={16} /> {(session.user as any)?.role || "User"}
+                 </p>
+                 {(session.user as any)?.username && (
+                   <p className="text-gray-400 font-medium flex items-center gap-1 text-sm bg-gray-100/50 px-3 py-1 rounded-full border border-gray-200/50">
+                     <AtSign size={14} /> {(session.user as any).username}
+                   </p>
+                 )}
+               </div>
             </div>
           </div>
 
@@ -119,7 +144,52 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="pt-8 border-t border-gray-100 flex flex-wrap gap-4">
+          <div className="mt-12 space-y-6">
+             <div className="flex items-center justify-between mb-2">
+                <h2 className="text-2xl font-serif font-bold text-brand-dark flex items-center gap-2">
+                   <MessageCircle size={24} className="text-brand-gold" /> My Questions
+                </h2>
+                <Link href="/ask" className="text-sm font-bold text-brand-gold hover:underline">Ask New Question &rarr;</Link>
+             </div>
+
+             {loadingQuestions ? (
+               <div className="flex items-center justify-center py-10">
+                  <Loader2 className="animate-spin text-brand-gold/30" />
+               </div>
+             ) : questions.length === 0 ? (
+               <div className="bg-white/40 border border-dashed border-gray-200 rounded-2xl p-10 text-center">
+                  <p className="text-gray-400 mb-4 italic">No questions found. Start exploring your thoughts by asking our scholars.</p>
+                  <Link href="/ask" className="inline-block px-8 py-3 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:brightness-110 transition-all">Ask a Question</Link>
+               </div>
+             ) : (
+               <div className="grid gap-4">
+                  {questions.map((q) => (
+                    <div key={q.id} className="bg-white/80 border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center justify-between group">
+                       <div className="space-y-1 pr-4">
+                          <h4 className="font-bold text-brand-dark group-hover:text-brand-gold transition-colors">{q.title}</h4>
+                          <p className="text-xs text-gray-400 font-medium">Submitted on {new Date(q.createdAt).toLocaleDateString()}</p>
+                       </div>
+                       <div className="flex items-center gap-3 shrink-0">
+                          {q.answers && q.answers.length > 0 ? (
+                            <span className="bg-green-50 text-green-600 text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-green-100 flex items-center gap-1 shadow-sm">
+                               <CheckCircle2 size={12} /> Answered
+                            </span>
+                          ) : (
+                            <span className="bg-amber-50 text-amber-600 text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-amber-100 flex items-center gap-1 shadow-sm">
+                               <Clock size={12} /> Pending Scholar
+                            </span>
+                          )}
+                          <Link href={`/forum/${q.id}`} className="p-2 bg-gray-50 text-gray-400 rounded-lg hover:bg-brand-gold/10 hover:text-brand-gold transition-all">
+                             <ChevronLeft size={20} className="rotate-180" />
+                          </Link>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+             )}
+          </div>
+
+          <div className="pt-12 border-t border-gray-100 flex flex-wrap gap-4 mt-12">
              <button 
               onClick={async () => { await signOut({ callbackUrl: "/" }); }}
                className="px-6 py-2 bg-brand-dark text-white rounded-full text-sm font-bold hover:bg-black transition-all"

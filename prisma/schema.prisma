@@ -45,9 +45,12 @@ model User {
   // Custom Fikrit User Fields
   role          Role?     // User must explicitly pick a role during setup
   isApproved    Boolean   @default(true) // Normal users auto-approved, Guides set to false when they request the role
+  username      String?   @unique
   phone         String?
   gender        String?   // "male" | "female"
   marjae        String?   // Marja-e-Taqleed
+  bio           String?   @db.Text
+  scholarTitle  String?   // e.g. "Mufti", "Sheikh", "Alim"
   points        Int       @default(0)
   badges        String[]  @default([])
   questions     Question[]
@@ -83,6 +86,10 @@ model Question {
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   answers   Answer[]
   tags      String[]
+  isPublic  Boolean  @default(false)
+  parentId  String?
+  parent    Question?  @relation("Thread", fields: [parentId], references: [id])
+  replies   Question[] @relation("Thread")
   assignedTo User[] @relation("QuestionAssignments")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -97,6 +104,7 @@ model Answer {
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   authorId   String
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  isPublic   Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

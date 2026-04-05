@@ -9,10 +9,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { title, content, guideId } = await request.json();
+  const { title, content, guideId, parentId } = await request.json();
 
-  if (!title || !content) {
-    return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
+  if (!content) {
+    return NextResponse.json({ error: 'Content is required' }, { status: 400 });
   }
 
   try {
@@ -47,9 +47,11 @@ export async function POST(request: Request) {
 
     const question = await prisma.question.create({
       data: {
-        title,
+        title: title || (parentId ? "Follow-up" : "Untitled"),
         content,
         authorId: (session.user as any).id,
+        parentId: parentId || null,
+        isPublic: parentId ? false : true, // Follow-ups require approval, originals are public
         assignedTo: {
           connect: { id: selectedGuideId },
         },
