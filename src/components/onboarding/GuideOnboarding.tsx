@@ -51,7 +51,7 @@ export function GuideOnboarding({ isLoading, onComplete, error }: Props) {
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
-                placeholder="sheikh_ali"
+                placeholder="Mohammad_Ali"
                 className="w-full pl-12 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-brand-gold/20 outline-none transition-all shadow-inner"
                 required
               />
@@ -66,7 +66,7 @@ export function GuideOnboarding({ isLoading, onComplete, error }: Props) {
                 type="text" 
                 value={scholarTitle}
                 onChange={(e) => setScholarTitle(e.target.value)}
-                placeholder="e.g. Sheikh, Mufti, Alim"
+                placeholder="e.g. A'alim, A'alema"
                 className="w-full pl-12 pr-6 py-4 bg-white/60 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-brand-gold/20 outline-none transition-all shadow-inner"
               />
             </div>
