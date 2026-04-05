@@ -35,7 +35,7 @@ export default function EditArticlePage() {
 
     const fetchArticle = async () => {
       try {
-        const res = await fetch(`/api/articles/${id}`);
+        const res = await fetch(`/api/articles/i/${id}`);
         if (!res.ok) throw new Error("Failed to fetch article settings");
         const data = await res.json();
         
@@ -72,7 +72,7 @@ export default function EditArticlePage() {
     setError("");
 
     try {
-      const res = await fetch(`/api/articles/${id}`, {
+      const res = await fetch(`/api/articles/i/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

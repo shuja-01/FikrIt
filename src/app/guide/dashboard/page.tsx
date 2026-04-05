@@ -81,7 +81,7 @@ export default function GuideDashboard() {
     if (!confirm(`Are you sure you want to permanently delete "${title}"? This cannot be undone.`)) return;
     
     try {
-      const res = await fetch(`/api/articles/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/articles/i/${id}`, { method: 'DELETE' });
       if (res.ok) {
         fetchData();
       } else {

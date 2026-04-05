@@ -25,7 +25,7 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
   useEffect(() => {
     async function fetchArticle() {
       try {
-        const res = await fetch(`/api/articles/${slug}`);
+        const res = await fetch(`/api/articles/s/${slug}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
         setArticle(data);
@@ -46,7 +46,7 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
     setCommentError("");
 
     try {
-      const res = await fetch(`/api/articles/${article.id}/comments`, {
+      const res = await fetch(`/api/articles/i/${article.id}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: commentContent }),
@@ -82,7 +82,7 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
     if (!confirm(`Are you sure you want to permanently delete "${article.title}"? This cannot be undone.`)) return;
     
     try {
-      const res = await fetch(`/api/articles/${article.id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/articles/i/${article.id}`, { method: 'DELETE' });
       if (res.ok) {
         router.push("/articles");
       } else {
