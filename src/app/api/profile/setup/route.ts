@@ -24,12 +24,12 @@ export async function POST(request: Request) {
     const updateData: any = { role, username };
 
     if (role === 'DEENI_GUIDE') {
-      if (!phone || !gender || !marjae || !username) {
-        return NextResponse.json({ error: 'Deeni Guides must provide username, phone, gender, and marjae' }, { status: 400 });
+      if (!phone || !gender || !username) {
+        return NextResponse.json({ error: 'Deeni Guides must provide username, phone, and gender' }, { status: 400 });
       }
       updateData.phone = phone;
       updateData.gender = gender;
-      updateData.marjae = marjae;
+      if (marjae) updateData.marjae = marjae;
       updateData.bio = bio;
       updateData.scholarTitle = scholarTitle;
       updateData.isApproved = false; // Requires admin approval
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     }
 
     // Check username uniqueness if provided
-    const existing = await prisma.user.findUnique({ where: { username } });
+    const existing = await prisma.user.findFirst({ where: { username } });
     if (existing && existing.id !== (session.user as any).id) {
        return NextResponse.json({ error: 'This username is already taken. Please choose another.' }, { status: 400 });
     }

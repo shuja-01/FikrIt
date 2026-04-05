@@ -9,7 +9,6 @@ interface Props {
     role: "DEENI_GUIDE"; 
     phone: string; 
     gender: string; 
-    marjae: string;
     username: string;
     bio?: string;
     scholarTitle?: string;
@@ -20,15 +19,14 @@ interface Props {
 export function GuideOnboarding({ isLoading, onComplete, error }: Props) {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
-  const [marjae, setMarjae] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [scholarTitle, setScholarTitle] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone || !gender || !marjae || !username) return;
-    onComplete({ role: "DEENI_GUIDE", phone, gender, marjae, username, bio, scholarTitle });
+    if (!phone || !gender || !username) return;
+    onComplete({ role: "DEENI_GUIDE", phone, gender, username, bio, scholarTitle });
   };
 
   return (
