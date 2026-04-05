@@ -36,15 +36,15 @@ export async function DELETE() {
     
     return response;
   } catch (error: any) {
-    console.error('[DELETE_API] Full Error:', error);
+    console.error('[DELETE_API] Error during account deletion:', error);
+    
+    // Check if it's a Prisma error related to constraints
+    const isConstraintError = error.code === 'P2003' || error.message.includes('foreign key constraint');
     
     return NextResponse.json({ 
-      error: 'Failed to delete account',
-      message: error.message,
-      code: error.code,
-      meta: error.meta,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-      suggestion: 'Check Prisma error code P2003 or P2025'
+      error: isConstraintError ? 'Failed to delete account due to database constraints.' : 'Failed to delete account.',
+      details: error.message,
+      suggestion: isConstraintError ? 'Ensure all related records (questions, answers) are handled.' : undefined
     }, { status: 500 });
   }
 }

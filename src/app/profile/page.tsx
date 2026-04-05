@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { User, Mail, ShieldCheck, Phone, Heart, BookOpen, Trash2, Loader2, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { serverSignOut } from "@/app/actions/auth";
+import { signOut } from "next-auth/react";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -36,8 +36,7 @@ export default function ProfilePage() {
       }
       
       if (success) {
-        await serverSignOut();
-        window.location.href = "/";
+        await signOut({ callbackUrl: "/" });
       }
     }
   };
@@ -122,7 +121,7 @@ export default function ProfilePage() {
 
           <div className="pt-8 border-t border-gray-100 flex flex-wrap gap-4">
              <button 
-              onClick={async () => { await serverSignOut(); window.location.href = "/"; }}
+              onClick={async () => { await signOut({ callbackUrl: "/" }); }}
                className="px-6 py-2 bg-brand-dark text-white rounded-full text-sm font-bold hover:bg-black transition-all"
              >
                 Sign Out
