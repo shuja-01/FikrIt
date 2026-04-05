@@ -8,11 +8,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 
 export default function SingleArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const { data: session } = useSession();
+  const router = useRouter();
   
   const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -76,6 +78,21 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
     }
   };
 
+  const handleDelete = async () => {
+    if (!confirm(`Are you sure you want to permanently delete "${article.title}"? This cannot be undone.`)) return;
+    
+    try {
+      const res = await fetch(`/api/articles/${article.id}`, { method: 'DELETE' });
+      if (res.ok) {
+        router.push("/articles");
+      } else {
+        alert("Failed to delete article.");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-brand-sand gap-4">
        <Loader2 size={32} className="animate-spin text-brand-gold" />
@@ -123,7 +140,7 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
                   {article.title}
                </h1>
 
-               <div className="flex items-center gap-6 pt-8 border-t border-white/10">
+                <div className="flex items-center justify-between pt-8 border-t border-white/10">
                   <div className="flex items-center gap-4 group cursor-pointer">
                      <img 
                        src={article.author.image || "/default-avatar.png"} 
@@ -135,10 +152,30 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
                         <p className="text-xl font-bold text-white group-hover:text-brand-gold transition-colors">{article.author.scholarTitle} {article.author.name}</p>
                      </div>
                   </div>
-               </div>
-            </div>
-         </div>
-      </div>
+
+                  {/* Author & Admin Management Controls */}
+                  <div className="flex items-center gap-4">
+                     {session && (session.user as any).id === article.authorId && (
+                        <Link 
+                           href={`/guide/articles/edit/${article.id}`}
+                           className="px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full text-xs font-bold hover:bg-white/20 transition-all"
+                        >
+                           Edit Research
+                        </Link>
+                     )}
+                     {session && ((session.user as any).id === article.authorId || (session.user as any).role === 'ADMIN') && (
+                        <button 
+                           onClick={handleDelete}
+                           className="px-6 py-2 bg-red-500/20 backdrop-blur-md border border-red-500/30 text-red-200 rounded-full text-xs font-bold hover:bg-red-500/40 transition-all"
+                        >
+                           Delete Article
+                        </button>
+                     )}
+                  </div>
+                </div>
+             </div>
+          </div>
+       </div>
 
       <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 py-24 grid grid-cols-1 lg:grid-cols-12 gap-16">
          {/* Article Content */}

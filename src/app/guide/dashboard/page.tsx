@@ -14,19 +14,23 @@ export default function GuideDashboard() {
   const [answerContent, setAnswerContent] = useState<{ [key: string]: string }>({});
   const [submitLoading, setSubmitLoading] = useState<{ [key: string]: boolean }>({});
   const [notifications, setNotifications] = useState<any[]>([]);
+  const [myArticles, setMyArticles] = useState<any[]>([]);
 
   const fetchData = async () => {
     try {
-      const [questionsRes, notificationsRes] = await Promise.all([
+      const [questionsRes, notificationsRes, articlesRes] = await Promise.all([
         fetch("/api/guide/questions"),
-        fetch("/api/notifications")
+        fetch("/api/notifications"),
+        fetch("/api/articles/my")
       ]);
 
       const questionsData = await questionsRes.json();
       const notificationsData = await notificationsRes.json();
+      const articlesData = await articlesRes.json();
 
       if (Array.isArray(questionsData)) setQuestions(questionsData);
       if (Array.isArray(notificationsData)) setNotifications(notificationsData);
+      if (Array.isArray(articlesData)) setMyArticles(articlesData);
     } catch (err) {
       console.error(err);
     } finally {
@@ -70,6 +74,21 @@ export default function GuideDashboard() {
       console.error(err);
     } finally {
       setSubmitLoading(prev => ({ ...prev, [id]: false }));
+    }
+  };
+
+  const handleDeleteArticle = async (id: string, title: string) => {
+    if (!confirm(`Are you sure you want to permanently delete "${title}"? This cannot be undone.`)) return;
+    
+    try {
+      const res = await fetch(`/api/articles/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchData();
+      } else {
+        alert("Failed to delete article. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -194,6 +213,62 @@ export default function GuideDashboard() {
                           {submitLoading[q.id] ? <Loader2 className="animate-spin" size={24} /> : <><Award size={20} className="text-brand-gold" /> Post Official Response</>}
                        </button>
                     </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div className="lg:col-span-8 mt-16">
+            <header className="mb-8 flex items-center justify-between">
+              <h2 className="text-3xl font-serif font-bold text-brand-dark flex items-center gap-3">
+                 <BookOpen className="text-brand-gold" /> My Published Research
+              </h2>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {myArticles.length === 0 ? (
+                <div className="md:col-span-2 text-center py-20 bg-white/40 border border-dashed border-gray-200 rounded-[2.5rem]">
+                   <BookOpen size={48} className="mx-auto text-brand-gold/20 mb-4" />
+                   <h3 className="text-2xl font-serif font-bold text-brand-dark">No research published yet</h3>
+                   <p className="text-gray-400">Share your wisdom by writing your first article.</p>
+                </div>
+              ) : (
+                myArticles.map(article => (
+                  <div key={article.id} className="glass-panel p-8 relative overflow-hidden group">
+                     <div className="flex items-center justify-between mb-4">
+                        <span className={`text-[10px] uppercase font-black tracking-widest px-3 py-1 rounded-full ${article.published ? 'bg-green-100 text-green-700' : 'bg-brand-gold/10 text-brand-gold'}`}>
+                          {article.published ? 'Published' : 'Draft'}
+                        </span>
+                        <div className="flex gap-2">
+                           <Link 
+                             href={`/guide/articles/edit/${article.id}`}
+                             className="p-2 hover:bg-brand-gold/10 rounded-full transition-colors text-brand-dark"
+                           >
+                             <Sparkles size={16} />
+                           </Link>
+                           <button 
+                             onClick={() => handleDeleteArticle(article.id, article.title)}
+                             className="p-2 hover:bg-red-50 text-red-500 rounded-full transition-colors"
+                           >
+                             <Loader2 size={16} className="text-red-400" />
+                           </button>
+                        </div>
+                     </div>
+                     <h3 className="text-2xl font-serif font-bold text-brand-dark mb-4 line-clamp-2">{article.title}</h3>
+                     <p className="text-gray-500 text-sm mb-6 line-clamp-3">{article.excerpt || "No summary provided."}</p>
+                     
+                     <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
+                        <div className="flex items-center gap-2 text-xs text-gray-400 font-bold">
+                           <MessageSquare size={14} /> {article._count.comments} Reflections
+                        </div>
+                        <Link 
+                          href={`/articles/${article.slug}`}
+                          className="text-xs font-black text-brand-gold uppercase tracking-widest hover:underline"
+                        >
+                          Read Article
+                        </Link>
+                     </div>
                   </div>
                 ))
               )}
