@@ -41,7 +41,11 @@ export async function POST(request: Request) {
     }
 
     // Check username uniqueness if provided
-    const existing = await prisma.user.findFirst({ where: { username } });
+    const existing = await prisma.user.findFirst({ 
+      where: { 
+        username: username
+      } 
+    }) as any;
     if (existing && existing.id !== (session.user as any).id) {
        return NextResponse.json({ error: 'This username is already taken. Please choose another.' }, { status: 400 });
     }

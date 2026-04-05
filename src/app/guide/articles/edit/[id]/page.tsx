@@ -40,7 +40,7 @@ export default function EditArticlePage() {
         const data = await res.json();
         
         // Authorization: Only the author can edit
-        if (data.authorId !== (session.user as any).id) {
+        if (session?.user && data.authorId !== (session.user as any).id) {
            setError("Unauthorized: You can only edit your own research.");
            setFetching(false);
            return;

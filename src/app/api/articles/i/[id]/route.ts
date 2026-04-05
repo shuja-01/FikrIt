@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/core/db';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const article = await prisma.article.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         author: {
           select: {
@@ -15,7 +16,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
           }
         }
       }
-    });
+    } as any);
 
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
@@ -28,7 +29,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await auth();
 
   if (!session || !session.user) {
@@ -37,9 +39,9 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
   try {
     const existingArticle = await prisma.article.findUnique({
-      where: { id: params.id },
+      where: { id },
       select: { authorId: true }
-    });
+    }) as any;
 
     if (!existingArticle) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
@@ -53,7 +55,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     const { title, content, excerpt, category, imageUrl, published } = await request.json();
 
     const updatedArticle = await prisma.article.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title,
         content,
@@ -61,7 +63,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
         category,
         imageUrl,
         published,
-      }
+      } as any
     });
 
     return NextResponse.json(updatedArticle);
@@ -71,7 +73,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await auth();
 
   if (!session || !session.user) {
@@ -80,9 +83,9 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
   try {
     const existingArticle = await prisma.article.findUnique({
-      where: { id: params.id },
+      where: { id },
       select: { authorId: true }
-    });
+    }) as any;
 
     if (!existingArticle) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 });
@@ -97,7 +100,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     }
 
     await prisma.article.delete({
-      where: { id: params.id }
+      where: { id }
     });
 
     return NextResponse.json({ message: 'Article deleted successfully' });
