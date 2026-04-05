@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function ThreadPage() {
   const params = useParams();
+  const router = useRouter();
   const { data: session } = useSession();
   const [thread, setThread] = useState<any>(null);
   const [loading, setLoading] = useState(true);
