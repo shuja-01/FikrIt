@@ -8,6 +8,7 @@ export default function FikrAdmin() {
   const [pendingGuides, setPendingGuides] = useState<any[]>([]);
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [unauthorized, setUnauthorized] = useState(false);
 
   const fetchDashboard = async () => {
     setLoading(true);
@@ -18,7 +19,8 @@ export default function FikrAdmin() {
       ]);
       
       if (pendingRes.status === 401 || usersRes.status === 401) {
-        window.location.href = "/";
+        setUnauthorized(true);
+        setLoading(false);
         return;
       }
 
@@ -70,6 +72,17 @@ export default function FikrAdmin() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <Loader2 className="animate-spin text-brand-gold h-10 w-10" />
+      </div>
+    );
+  }
+
+  if (unauthorized) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
+        <ShieldCheck size={64} className="text-red-400 mb-6" />
+        <h1 className="text-3xl font-serif font-bold text-gray-800 mb-2">Access Denied</h1>
+        <p className="text-gray-500 max-w-md text-center mb-8">You do not have permission to view this page. Ensure you are logged in using an Administrator account, or contact support.</p>
+        <button onClick={() => window.location.href = "/"} className="px-6 py-2 bg-brand-gold text-white rounded-full font-bold shadow-lg hover:bg-yellow-600 transition-all">Return to Home</button>
       </div>
     );
   }

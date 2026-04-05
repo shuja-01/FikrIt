@@ -33,12 +33,8 @@ export default function AuthButton() {
     const handleSignOut = async () => {
       if (confirm("Are you sure you want to sign out?")) {
         console.log("Invoking signOut...");
-        try {
-          await serverSignOut();
-        } catch (error: any) {
-          console.error("Sign out error:", error);
-          alert(`Sign out failed: ${error.message}`);
-        }
+        await serverSignOut();
+        window.location.href = "/";
       }
     };
 

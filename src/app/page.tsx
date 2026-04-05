@@ -80,7 +80,7 @@ export default function Home() {
 
           {/* Tools Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <Link href="/discussions" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center flex-col justify-center text-center hover:translate-y-[-2px] transition-transform cursor-pointer">
+            <Link href="/forum" className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center flex-col justify-center text-center hover:translate-y-[-2px] transition-transform cursor-pointer">
               <TrendingUp className="text-emerald-600 mb-2" size={24} />
               <span className="font-medium text-sm">Trending<br/>Discussions</span>
             </Link>

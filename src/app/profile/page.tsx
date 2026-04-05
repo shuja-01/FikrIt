@@ -25,13 +25,19 @@ export default function ProfilePage() {
 
   const handleDelete = async () => {
     if (confirm("Are you sure you want to permanently delete your account? This cannot be undone.")) {
+      let success = false;
       try {
         const res = await fetch("/api/profile/delete", { method: "DELETE" });
         if (res.ok) {
-           await serverSignOut();
+           success = true;
         }
       } catch (err) {
         console.error(err);
+      }
+      
+      if (success) {
+        await serverSignOut();
+        window.location.href = "/";
       }
     }
   };
@@ -116,7 +122,7 @@ export default function ProfilePage() {
 
           <div className="pt-8 border-t border-gray-100 flex flex-wrap gap-4">
              <button 
-              onClick={() => serverSignOut()}
+              onClick={async () => { await serverSignOut(); window.location.href = "/"; }}
                className="px-6 py-2 bg-brand-dark text-white rounded-full text-sm font-bold hover:bg-black transition-all"
              >
                 Sign Out
