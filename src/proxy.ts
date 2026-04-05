@@ -20,32 +20,28 @@ export default async function proxy(request: NextRequest) {
   const session = await auth();
   const user = session?.user as any;
 
-  // 1. IP Restriction for /fikradmin
+  // 1. Access Control for /fikradmin
   if (pathname.startsWith('/fikradmin')) {
     const realIp = request.headers.get('x-real-ip');
     const forwardedFor = request.headers.get('x-forwarded-for');
     const clientIp = realIp || (forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1');
     
-    // User's provided IP from Vercel env
     const allowedIp = process.env.ADMIN_IP || '60.53.126.63'; 
     
-    console.log(`[PROXY] Admin attempt from IP: ${clientIp} (Allowed: ${allowedIp})`);
-    
-    // Allow local development and the configured admin IP
-    // Handling IPv4, IPv6, and IPv4-mapped IPv6 (::ffff:127.0.0.1)
+    // Allow: local dev, matching IP, OR authenticated ADMIN user
     const isLocal = clientIp === '127.0.0.1' || 
                     clientIp === '::1' || 
-                    clientIp.includes('127.0.0.1') ||
-                    clientIp.startsWith('localhost');
-                    
-    const isAllowed = clientIp === allowedIp || isLocal;
+                    clientIp.includes('127.0.0.1');
+    const isAllowedIp = clientIp === allowedIp || isLocal;
+    const isAdmin = user?.role === 'ADMIN';
 
-    if (!isAllowed) {
-      console.log(`[PROXY] Unauthorized IP: ${clientIp}. Redirecting to home.`);
+    console.log(`[PROXY] Admin attempt from IP: ${clientIp} (Allowed: ${allowedIp}, isAdmin: ${isAdmin})`);
+
+    if (!isAllowedIp && !isAdmin) {
+      console.log(`[PROXY] Unauthorized: IP ${clientIp}, role: ${user?.role}. Redirecting.`);
       return NextResponse.redirect(new URL('/', request.url));
     }
     
-    // Admins bypass all other checks on this request
     return NextResponse.next();
   }
 
