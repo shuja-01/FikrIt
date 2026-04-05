@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { 
@@ -20,7 +20,10 @@ export default function NewArticlePage() {
   const [category, setCategory] = useState("FIQH");
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (status === "loading") return <div className="min-h-screen flex items-center justify-center bg-brand-sand"><Loader2 className="animate-spin text-brand-gold" /></div>;
   if (status === "unauthenticated" || (session?.user as any)?.role !== 'DEENI_GUIDE') {
@@ -59,6 +62,30 @@ export default function NewArticlePage() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError("");
+
+    try {
+      const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+        method: "POST",
+        body: file,
+      });
+      
+      if (!res.ok) throw new Error("Upload failed");
+      const blob = await res.json();
+      setImageUrl(blob.url);
+    } catch (err: any) {
+      setError("Failed to upload image. Please try again.");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -135,17 +162,66 @@ export default function NewArticlePage() {
                   </select>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest flex items-center gap-2">
-                    <ImageIcon size={12} /> Cover Image URL
+                    <ImageIcon size={12} /> Cover Image
                   </label>
+                  
+                  {imageUrl ? (
+                    <div className="relative aspect-video rounded-2xl overflow-hidden border border-gray-100 group">
+                      <img src={imageUrl} alt="Cover Preview" className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        <button 
+                          onClick={() => fileInputRef.current?.click()}
+                          className="p-2 bg-white rounded-full text-brand-dark hover:scale-110 transition-transform"
+                        >
+                          <ImageIcon size={18} />
+                        </button>
+                        <button 
+                          onClick={() => setImageUrl("")}
+                          className="p-2 bg-white rounded-full text-red-600 hover:scale-110 transition-transform"
+                        >
+                          <ChevronLeft size={18} className="rotate-90" /> {/* Using Chevron as a temporary 'X' */}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button 
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploading}
+                      className="w-full aspect-video border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-brand-gold/50 hover:bg-brand-gold/5 transition-all text-gray-400 hover:text-brand-gold group"
+                    >
+                      {uploading ? (
+                        <Loader2 className="animate-spin text-brand-gold" size={24} />
+                      ) : (
+                        <>
+                          <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center group-hover:bg-brand-gold/10 transition-colors">
+                            <ImageIcon size={24} />
+                          </div>
+                          <span className="text-xs font-bold">Click to Upload Cover</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+
                   <input 
-                    type="url"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="https://..."
-                    className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-4 focus:ring-brand-gold/10 outline-none"
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
                   />
+                  
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-gray-400">Or enter manual URL</label>
+                    <input 
+                      type="url"
+                      value={imageUrl}
+                      onChange={(e) => setImageUrl(e.target.value)}
+                      placeholder="https://..."
+                      className="w-full p-3 bg-white border border-gray-100 rounded-xl focus:ring-4 focus:ring-brand-gold/10 outline-none text-xs"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">

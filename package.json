@@ -23,6 +23,7 @@
     "@tiptap/pm": "^3.22.2",
     "@tiptap/react": "^3.22.2",
     "@tiptap/starter-kit": "^3.22.2",
+    "@vercel/blob": "^2.3.3",
     "cheerio": "^1.2.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.38.0",

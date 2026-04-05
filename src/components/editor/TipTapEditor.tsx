@@ -3,14 +3,16 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import { 
   Bold, Italic, List, ListOrdered, Quote, Heading1, Heading2, 
   Link as LinkIcon, Undo, Redo, Underline as UnderlineIcon, 
-  AlignLeft, AlignCenter, AlignRight 
+  AlignLeft, AlignCenter, AlignRight, Image as ImageIcon, Loader2 
 } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 interface Props {
   content: string;
@@ -23,6 +25,11 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
     extensions: [
       StarterKit,
       Underline,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-2xl shadow-lg border border-gray-100 my-8 max-w-full',
+        },
+      }),
       Link.configure({
         openOnClick: false,
       }),
@@ -43,8 +50,35 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
       },
     },
   });
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
   if (!editor) return null;
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+        method: 'POST',
+        body: file,
+      });
+      
+      if (!res.ok) throw new Error('Upload failed');
+      const blob = await res.json();
+      
+      editor.chain().focus().setImage({ src: blob.url }).run();
+    } catch (error) {
+      console.error('Editor upload error:', error);
+      alert('Failed to upload image. Please check your storage settings.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const MenuButton = ({ onClick, isActive, children, title }: any) => (
     <button
@@ -161,6 +195,23 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
           title="Link"
         >
           <LinkIcon size={20} />
+        </MenuButton>
+
+        <div className="w-px h-6 bg-gray-200 mx-1" />
+
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          className="hidden" 
+          accept="image/*" 
+          onChange={handleImageUpload} 
+        />
+        <MenuButton 
+          onClick={() => fileInputRef.current?.click()}
+          title="Insert Image"
+          disabled={uploading}
+        >
+          {uploading ? <Loader2 size={20} className="animate-spin text-brand-gold" /> : <ImageIcon size={20} />}
         </MenuButton>
 
         <div className="ml-auto flex items-center gap-1">
