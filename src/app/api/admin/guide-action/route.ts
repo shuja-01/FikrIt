@@ -6,7 +6,8 @@ export async function POST(request: Request) {
   const session = await auth();
 
   // Basic role check (IP restriction is at middleware level)
-  if (!session || !session.user) {
+  // Strict authorization check
+  if (!session || !session.user || (session.user as any).role !== 'ADMIN') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

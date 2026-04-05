@@ -1,14 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { auth } from '@/auth';
+import NextAuth from 'next-auth';
+import authConfig from './auth.config';
 
-export async function proxy(request: NextRequest) {
+// Use Edge-compatible auth initialization
+const { auth } = NextAuth(authConfig);
+
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAuthRoute = pathname.startsWith('/api/auth');
   const isPendingPage = pathname.includes('/pending-approval');
   
   // 1. VIP Bypass (Highest Priority)
-  // This MUST run before auth() to prevent middleware deadlocks.
   const hasJustSetup = request.cookies.get('fikrit_setup_success');
   if (hasJustSetup?.value === 'true' && !isAuthRoute && !isPendingPage && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
      return NextResponse.next();
@@ -26,10 +29,19 @@ export async function proxy(request: NextRequest) {
     // User's provided IP from Vercel env
     const allowedIp = process.env.ADMIN_IP || '60.53.126.63'; 
     
-    console.log(`[PROXY] Admin attempt from IP: ${clientIp} (Target: ${allowedIp})`);
+    console.log(`[PROXY] Admin attempt from IP: ${clientIp} (Allowed: ${allowedIp})`);
     
-    if (clientIp !== allowedIp) {
-      console.log(`[PROXY] Unauthorized IP: ${clientIp}. Access denied.`);
+    // Allow local development and the configured admin IP
+    // Handling IPv4, IPv6, and IPv4-mapped IPv6 (::ffff:127.0.0.1)
+    const isLocal = clientIp === '127.0.0.1' || 
+                    clientIp === '::1' || 
+                    clientIp.includes('127.0.0.1') ||
+                    clientIp.startsWith('localhost');
+                    
+    const isAllowed = clientIp === allowedIp || isLocal;
+
+    if (!isAllowed) {
+      console.log(`[PROXY] Unauthorized IP: ${clientIp}. Redirecting to home.`);
       return NextResponse.redirect(new URL('/', request.url));
     }
     
