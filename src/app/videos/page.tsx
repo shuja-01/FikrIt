@@ -12,7 +12,7 @@ function VideoCard({ video, onClick }: { video: Video; onClick: () => void }) {
     const fallbacks = [
       `https://i.ytimg.com/vi/${video.id}/mqdefault.jpg`,
       `https://i.ytimg.com/vi/${video.id}/default.jpg`,
-      `/ytThumnail.png`,
+      `/ytThumnail.PNG`,
     ];
     if (tries < fallbacks.length) {
       setImgSrc(fallbacks[tries]);
@@ -106,7 +106,7 @@ export default function VideosPage() {
                 alt={latestVideo.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = `/ytThumnail.png`;
+                  (e.target as HTMLImageElement).src = `/ytThumnail.PNG`;
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />

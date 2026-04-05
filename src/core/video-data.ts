@@ -96,126 +96,125 @@ export const VIDEOS: Video[] = [
 
   // ─── SAYED AMMAR NAKSHAWANI (well-known stable IDs) ───────────────
   {
+    id: 'fUpfvu_OAmE',
+    title: '25. Tanya Jawab Bulan Suci Ramadhan (Bagian 1) | Sayed Ammar Nakshawani | Ramadhan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/fUpfvu_OAmE/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '6,567K', duration: '57:29', isLatest: true
+  },
+  {
+    id: '5ZIVAEY9c6A',
+    title: '24. Apakah Imam Ali Menamai Putranya Umar? | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/5ZIVAEY9c6A/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '7,701K', duration: '50:36'
+  },
+  {
     id: 'UoaAj2dpA3s',
-    title: 'Ramadan Duas & Supplications',
+    title: '23. Ten Powerful Sunni & Shia Duas | Sayed Ammar Nakshawani | Ramadan 2026',
     thumbnail: 'https://i.ytimg.com/vi/UoaAj2dpA3s/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani',
-    views: '1.2M', duration: '45:12', isLatest: true
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '4,176K', duration: '1:18:03'
   },
   {
-    id: 'sNTl2PFHnSs',
-    title: 'The Importance of Arbaeen - Nakshawani',
-    thumbnail: 'https://i.ytimg.com/vi/sNTl2PFHnSs/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '890K', duration: '40:10'
+    id: 'f44i7EG-nAk',
+    title: '22. The Muslim Lantern: Sunni-Shia Unity | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/f44i7EG-nAk/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '21,743K', duration: '55:16'
   },
   {
-    id: 'XNFa3H0PLEM',
-    title: 'Who Is Imam Ali? - Nakshawani',
-    thumbnail: 'https://i.ytimg.com/vi/XNFa3H0PLEM/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '1.5M', duration: '52:00'
+    id: 'Vq_mSPo4nv8',
+    title: '21. Is Imam Ali Greater Than The Prophets? | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/Vq_mSPo4nv8/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '11,084K', duration: '1:35:56'
   },
   {
-    id: 'KW9FXhWzP5c',
-    title: 'Why Hussain Stood Alone - Nakshawani',
-    thumbnail: 'https://i.ytimg.com/vi/KW9FXhWzP5c/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '2.1M', duration: '48:33'
+    id: 'gqHV0HpWquE',
+    title: '20. Raise Your Children Loving Imam Ali | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/gqHV0HpWquE/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '13,148K', duration: '1:20:20'
   },
   {
-    id: '7zFTADWNDYk',
-    title: 'Lady Fatimah al-Zahra - Nakshawani',
-    thumbnail: 'https://i.ytimg.com/vi/7zFTADWNDYk/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '700K', duration: '38:20'
+    id: 'ZHXW5rMZI00',
+    title: '19. Imam Ali & The Ethics Of War | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/ZHXW5rMZI00/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '36,384K', duration: '1:12:59'
   },
   {
-    id: 'Hl5UwLt_Lhc',
-    title: 'Rights of Parents in Islam - Nakshawani',
-    thumbnail: 'https://i.ytimg.com/vi/Hl5UwLt_Lhc/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '430K', duration: '35:15'
+    id: 'H4_HsXqkAfw',
+    title: '18. Imamate In The Qur’an | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/H4_HsXqkAfw/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '9,476K', duration: '1:03:41'
   },
   {
-    id: 'c8WqSiLs3OI',
-    title: 'The Night of Power (Laylat al-Qadr)',
-    thumbnail: 'https://i.ytimg.com/vi/c8WqSiLs3OI/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '560K', duration: '42:00'
+    id: 'Me8t3vF6pBg',
+    title: '17. Khalid Ibn Waleed Or Imam Ali: Sword Of Allah? | Sayed Ammar Nakshawani | Ramadan 2026',
+    thumbnail: 'https://i.ytimg.com/vi/Me8t3vF6pBg/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '8,777K', duration: '1:00:03'
   },
   {
-    id: 'OI0rl3f_81I',
-    title: 'The Battle of Karbala Explained',
-    thumbnail: 'https://i.ytimg.com/vi/OI0rl3f_81I/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '3.2M', duration: '55:00'
-  },
-  {
-    id: 'fSzJqBKFDlc',
-    title: "Imam Hussain's Message to Humanity",
-    thumbnail: 'https://i.ytimg.com/vi/fSzJqBKFDlc/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '1.8M', duration: '50:30'
-  },
-  {
-    id: 'b5NJaP5cRSE',
-    title: 'The Day of Judgement - Nakshawani',
-    thumbnail: 'https://i.ytimg.com/vi/b5NJaP5cRSE/hqdefault.jpg',
-    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '670K', duration: '44:10'
+    id: '92AD4SRPeSU',
+    title: '16. Mengapa Para Sahabat Bertengkar, Menghina & Membenci Imam Ali? | Sayed Ammar Nakshawani | Ram...',
+    thumbnail: 'https://i.ytimg.com/vi/92AD4SRPeSU/hqdefault.jpg',
+    channelName: 'Sayed Ammar Nakshawani', channelId: 'nakshawani', views: '10,806K', duration: '51:31'
   },
 
   // ─── BARABANKI AZADARI ────────────────────────────────────────────
   {
+    id: 'h4gnwlVWz8k',
+    title: 'माँ माँ होती है 💔 | Syed Monis Raza Naqvi | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/h4gnwlVWz8k/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '148K', duration: '6:15'
+  },
+  {
+    id: 'hvYjuXhOrsw',
+    title: 'Aza-E-Fatmiya | क्यों छोड़ जाती है माँ | Monis Raza Naqvi | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/hvYjuXhOrsw/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '203K', duration: '6:20'
+  },
+  {
     id: 'isFMu7KQlmU',
-    title: 'Formal Majlis – Barabanki Azadari',
+    title: 'Marsiya | Jnb Tasawwar mehndi Sb | Kesaruva Sadat Barabanki | 2025 |',
     thumbnail: 'https://i.ytimg.com/vi/isFMu7KQlmU/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '180K', duration: '1:10:45'
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '299K', duration: '14:06'
   },
   {
-    id: 'ZMy2L2Qx0bk',
-    title: 'Muharram Majlis Night 1 – Barabanki',
-    thumbnail: 'https://i.ytimg.com/vi/ZMy2L2Qx0bk/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '95K', duration: '1:02:10'
+    id: 'VKoJH5JiDWo',
+    title: 'मदीने वापसी पर दिल सोज़ मंजर | 8 RabiulAwwal | Bhanauli Sadat Musafirkhana | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/VKoJH5JiDWo/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '519K', duration: '5:36'
   },
   {
-    id: 'lDYBFGmFSAE',
-    title: 'Marsiya Majlis – Barabanki',
-    thumbnail: 'https://i.ytimg.com/vi/lDYBFGmFSAE/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '75K', duration: '58:30'
+    id: '9mJP3ExHqe0',
+    title: 'Dardnak Naqabat | Zeeshan Ali Azmi | Sarai Ismail Barabanki | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/9mJP3ExHqe0/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '417K', duration: '8:22'
   },
   {
-    id: 'N8R7gyEHPpI',
-    title: 'Sham-e-Ghariban – Barabanki 2024',
-    thumbnail: 'https://i.ytimg.com/vi/N8R7gyEHPpI/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '55K', duration: '1:15:00'
+    id: 'EB9Lx31_3JU',
+    title: 'Nasheb Me | Abbas Ali Arfi | Karbala Civil Line Barabanki | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/EB9Lx31_3JU/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '304K', duration: '15:32'
   },
   {
-    id: 'b9i5YeRl5mY',
-    title: 'Ashura Jaloos – Barabanki',
-    thumbnail: 'https://i.ytimg.com/vi/b9i5YeRl5mY/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '130K', duration: '35:00'
+    id: '2PhNTBCdpuM',
+    title: 'Wo Sakina Bahen Thi Meri | Shabih Abbas Arfi | Zaidpur Barabanki | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/2PhNTBCdpuM/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '445K', duration: '7:20'
   },
   {
-    id: 'KHXCnGMsEJo',
-    title: 'Arbaeen Majlis – Barabanki Azadari',
-    thumbnail: 'https://i.ytimg.com/vi/KHXCnGMsEJo/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '42K', duration: '55:00'
+    id: '96PS-BNGlqk',
+    title: 'Tumhari Lash Pahchanu Mai Kaisae | Ali Moosa | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/96PS-BNGlqk/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '8,430K', duration: '12:01'
   },
   {
-    id: 'j3xfTlQ0ASs',
-    title: 'Full Shab-e-Barat Majlis – Barabanki',
-    thumbnail: 'https://i.ytimg.com/vi/j3xfTlQ0ASs/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '61K', duration: '1:20:00'
+    id: '0A1a32lhrWg',
+    title: 'Dariya Alam | 25 Moharram | Belaon Sayyedwada Barabanki | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/0A1a32lhrWg/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '872K', duration: '5:21'
   },
   {
-    id: 'OGGj__3kFRk',
-    title: 'Imam Ali Birthday Majlis – Barabanki',
-    thumbnail: 'https://i.ytimg.com/vi/OGGj__3kFRk/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '47K', duration: '48:15'
-  },
-  {
-    id: 'q3wFv2cFpDI',
-    title: 'Nauha Collection – Barabanki Azadari',
-    thumbnail: 'https://i.ytimg.com/vi/q3wFv2cFpDI/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '88K', duration: '45:22'
-  },
-  {
-    id: 'g_tM8UbzYcQ',
-    title: 'Imam Hussain Majlis – Live Barabanki',
-    thumbnail: 'https://i.ytimg.com/vi/g_tM8UbzYcQ/hqdefault.jpg',
-    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '74K', duration: '1:30:00'
+    id: 'ylXyC0YSGC4',
+    title: 'सीने में जवां लाल के बरछी की अनी है 💔 | Anjuman Haidariya Maniharpur | 2025 |',
+    thumbnail: 'https://i.ytimg.com/vi/ylXyC0YSGC4/hqdefault.jpg',
+    channelName: 'Barabanki Azadari', channelId: 'barabanki', views: '396K', duration: '15:15'
   }
 ];
