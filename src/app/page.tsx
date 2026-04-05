@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import AuthButton from "./components/AuthButton";
-import { HelpCircle, Video, Sun, TrendingUp, BookMarked } from "lucide-react";
+import { HelpCircle, Video, TrendingUp, BookMarked } from "lucide-react";
 import ForumSearch from "./components/ForumSearch";
+import DailyReflection from "./components/DailyReflection";
 
 export default function Home() {
   return (
@@ -75,16 +76,7 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-8">
           
           {/* Daily Feature */}
-          <div className="md:col-span-2 glass-panel p-8 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-brand-gold group-hover:w-full transition-all duration-700 opacity-10" />
-            <div className="flex items-center gap-2 text-brand-gold mb-4 font-semibold text-sm tracking-uppercase">
-               <Sun size={16} /> Daily Reflection
-            </div>
-            <h3 className="text-2xl font-serif mb-4 leading-normal">
-              "And He found you lost and guided [you]." 
-            </h3>
-            <p className="text-gray-500 text-sm">— Quran 93:7 (Surah Ad-Duhaa)</p>
-          </div>
+          <DailyReflection />
 
           {/* Tools Grid */}
           <div className="grid grid-cols-2 gap-4">
