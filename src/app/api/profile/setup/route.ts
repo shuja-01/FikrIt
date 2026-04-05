@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     return new NextResponse(JSON.stringify(updatedUser), {
       status: 200,
       headers: {
-        'Set-Cookie': 'fikrit_setup_success=true; Path=/; Max-Age=60; SameSite=Lax',
+        'Set-Cookie': 'fikrit_setup_success=true; Path=/; Max-Age=3600; SameSite=Lax',
         'Content-Type': 'application/json',
       },
     });

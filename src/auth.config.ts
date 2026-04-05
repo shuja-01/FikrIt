@@ -25,6 +25,7 @@ export default {
         token.phone = (user as any).phone;
         token.gender = (user as any).gender;
         token.marjae = (user as any).marjae;
+        token.username = (user as any).username;
       }
       return token;
     },
@@ -36,6 +37,7 @@ export default {
         session.user.phone = token.phone as string;
         session.user.gender = token.gender as string;
         session.user.marjae = token.marjae as string;
+        session.user.username = token.username as string;
       }
       return session;
     }
