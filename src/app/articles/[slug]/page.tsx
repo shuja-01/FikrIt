@@ -4,7 +4,7 @@ import { useEffect, useState, use } from "react";
 import { 
   ChevronLeft, Clock, User, Share2, 
   MessageSquare, Send, Loader2, Calendar, 
-  Bookmark, Award, Sparkles, BookOpen 
+  Bookmark, Award, Sparkles, BookOpen, Trash2
 } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -90,6 +90,29 @@ export default function SingleArticlePage({ params }: { params: Promise<{ slug: 
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!confirm("Are you sure you want to remove this community reflection?")) return;
+    
+    try {
+      const res = await fetch(`/api/articles/i/${article.id}/comments/${commentId}`, { 
+        method: 'DELETE' 
+      });
+      
+      if (res.ok) {
+        // Remove comment from local state for instant feedback
+        setArticle({
+          ...article,
+          comments: article.comments.filter((c: any) => c.id !== commentId)
+        });
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to delete comment.");
+      }
+    } catch (err) {
+      console.error("Comment deletion error:", err);
     }
   };
 

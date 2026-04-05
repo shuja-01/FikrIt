@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { MessageCircle, MessageSquare, Clock, User, AtSign, Loader2, ChevronLeft, ShieldCheck, Send, Info, Award } from "lucide-react";
+import { MessageCircle, MessageSquare, Clock, User, AtSign, Loader2, ChevronLeft, ShieldCheck, Send, Info, Award, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
@@ -60,6 +60,30 @@ export default function ThreadPage() {
     }
   };
 
+  const handleDeleteThread = async () => {
+    if (!confirm("Are you sure you want to permanently delete this thread?")) return;
+    try {
+      const res = await fetch(`/api/forum/${thread.id}`, { method: 'DELETE' });
+      if (res.ok) router.push('/forum');
+      else alert("Failed to delete thread.");
+    } catch (err) { console.error(err); }
+  };
+
+  const handleDeleteAnswer = async (answerId: string) => {
+    if (!confirm("Are you sure you want to remove this response?")) return;
+    try {
+      const res = await fetch(`/api/answers/${answerId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setThread({
+          ...thread,
+          answers: thread.answers.filter((a: any) => a.id !== answerId)
+        });
+      } else {
+        alert("Failed to delete answer.");
+      }
+    } catch (err) { console.error(err); }
+  };
+
   if (loading) return (
      <div className="min-h-screen bg-brand-sand flex items-center justify-center">
         <Loader2 className="animate-spin text-brand-gold" size={48} />
@@ -92,13 +116,22 @@ export default function ThreadPage() {
                     <User className="text-brand-gold/50" size={24} />
                   )}
                </div>
-               <div>
+               <div className="flex-1">
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-tight">Question by</p>
                   <p className="font-bold text-brand-dark text-xl flex items-center gap-1.5 capitalize">
                      {thread.author?.username || 'anonymous'}
                   </p>
                   <p className="text-xs text-gray-400 font-medium">{new Date(thread.createdAt).toLocaleDateString()}</p>
                </div>
+               {session && ((session.user as any).role === 'ADMIN' || (session.user as any).id === thread.authorId) && (
+                  <button 
+                     onClick={handleDeleteThread}
+                     className="p-3 text-red-500/50 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all self-start"
+                     title="Delete Thread"
+                  >
+                     <Trash2 size={20} />
+                  </button>
+               )}
             </div>
 
             <h1 className="text-4xl font-serif font-bold text-brand-dark mb-6 leading-tight">{thread.title}</h1>
@@ -129,7 +162,7 @@ export default function ThreadPage() {
                        <Award className="text-brand-gold" size={32} />
                      )}
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-3 mb-1">
                       <h4 className="font-bold text-brand-dark text-lg capitalize">{answer.author?.name}</h4>
                       {answer.author?.scholarTitle && (
@@ -142,6 +175,15 @@ export default function ThreadPage() {
                       <p className="text-xs text-gray-400 font-medium line-clamp-1 italic">{answer.author.bio}</p>
                     )}
                   </div>
+                  {session && ((session.user as any).role === 'ADMIN' || (session.user as any).id === answer.authorId) && (
+                    <button 
+                       onClick={() => handleDeleteAnswer(answer.id)}
+                       className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                       title="Delete Answer"
+                    >
+                       <Trash2 size={18} />
+                    </button>
+                  )}
                 </div>
 
                 <div className="prose prose-brand max-w-none mb-4">
