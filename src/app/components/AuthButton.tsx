@@ -1,8 +1,9 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { User, LogOut, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { serverSignOut } from "@/app/actions/auth";
 
 export default function AuthButton() {
   const { data: session } = useSession();
@@ -15,7 +16,7 @@ export default function AuthButton() {
         
         if (res.ok) {
           console.log("Delete successful, signing out...");
-          await signOut({ callbackUrl: "/" });
+          await serverSignOut();
         } else {
           const errorData = await res.json().catch(() => ({}));
           console.error("Delete failed:", { status: res.status, errorData });
@@ -33,7 +34,7 @@ export default function AuthButton() {
       if (confirm("Are you sure you want to sign out?")) {
         console.log("Invoking signOut...");
         try {
-          await signOut({ callbackUrl: "/" });
+          await serverSignOut();
         } catch (error: any) {
           console.error("Sign out error:", error);
           alert(`Sign out failed: ${error.message}`);

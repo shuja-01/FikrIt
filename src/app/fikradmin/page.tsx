@@ -16,12 +16,18 @@ export default function FikrAdmin() {
         fetch("/api/admin/pending-guides"),
         fetch("/api/admin/users")
       ]);
+      
+      if (pendingRes.status === 401 || usersRes.status === 401) {
+        window.location.href = "/";
+        return;
+      }
+
       const [pendingData, usersData] = await Promise.all([
         pendingRes.json(),
         usersRes.json()
       ]);
-      setPendingGuides(pendingData || []);
-      setAllUsers(usersData || []);
+      setPendingGuides(Array.isArray(pendingData) ? pendingData : []);
+      setAllUsers(Array.isArray(usersData) ? usersData : []);
     } catch (err) {
       console.error(err);
     } finally {

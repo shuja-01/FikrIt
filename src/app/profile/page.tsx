@@ -1,9 +1,10 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { User, Mail, ShieldCheck, Phone, Heart, BookOpen, Trash2, Loader2, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { serverSignOut } from "@/app/actions/auth";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -27,7 +28,7 @@ export default function ProfilePage() {
       try {
         const res = await fetch("/api/profile/delete", { method: "DELETE" });
         if (res.ok) {
-           signOut({ callbackUrl: "/" });
+           await serverSignOut();
         }
       } catch (err) {
         console.error(err);
@@ -115,7 +116,7 @@ export default function ProfilePage() {
 
           <div className="pt-8 border-t border-gray-100 flex flex-wrap gap-4">
              <button 
-              onClick={() => signOut()}
+              onClick={() => serverSignOut()}
                className="px-6 py-2 bg-brand-dark text-white rounded-full text-sm font-bold hover:bg-black transition-all"
              >
                 Sign Out
