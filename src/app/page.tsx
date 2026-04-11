@@ -101,7 +101,7 @@ export default function Home() {
       <footer className="py-16 px-6 md:px-12 lg:px-24 text-gray-400 text-sm border-t border-gray-200 bg-white/30">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div className="flex flex-col items-start gap-4">
-            <div className="relative w-64 h-20 overflow-hidden">
+            <div className="relative w-80 h-28 overflow-hidden">
               <Image 
                 src="/NewFIlogo.png" 
                 alt="Fikrit Full Logo" 
