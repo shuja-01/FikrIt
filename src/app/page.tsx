@@ -14,7 +14,7 @@ export default function Home() {
           {/* Real Logo from public folder */}
           <div className="w-16 h-16 relative overflow-hidden rounded-md border border-gray-100 bg-white shadow-sm">
              <Image 
-               src="/logo.jpeg" 
+               src="/NewFIlogo.png" 
                alt="Fikrit Logo" 
                fill 
                className="object-contain"
@@ -102,7 +102,7 @@ export default function Home() {
         <div className="flex flex-col items-center gap-6 mb-8">
           <div className="relative w-48 h-16 overflow-hidden">
             <Image 
-              src="/fikritFull-logo.jpg" 
+              src="/NewFIlogo.png" 
               alt="Fikrit Full Logo" 
               fill 
               className="object-contain"

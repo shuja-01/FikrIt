@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Fikrit | Share Your Thinking",
   description: "A comprehensive Islamic knowledge-sharing and community platform.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/NewFIlogo.png",
   },
 };
 
